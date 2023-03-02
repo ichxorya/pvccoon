@@ -1,0 +1,14 @@
+digraph fsm {
+    rankdir=LR;
+    node [shape=point];
+    start;
+    node [shape=circle];
+    s0;
+    
+    node [shape=doublecircle] s1;
+
+    // Rule
+    start -> s0 [label="start"];
+    s0 -> s1 [label="lower/uppercase letter (LUL)"];
+    s1 -> s1 [label="LUL | digit"];
+}

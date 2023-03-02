@@ -15,7 +15,7 @@ A compiler for the VC language, which is a subset of the C language.
 [dependencies]
 # Compiler-compiler related crates.
 logos = "0.12.1" # Lexer-generator.
-lalrpop = "0.19.8" # Parser-generator.
+combine = "4.6.6" # LL(1) Parser-generator.
 
 # Unicode related crates.
 unic = "0.9.0" # Unicode and Internationalization Crates.
