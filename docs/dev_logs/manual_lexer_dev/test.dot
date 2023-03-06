@@ -1,14 +1,37 @@
-digraph fsm {
+digraph float_literal {
     rankdir=LR;
-    node [shape=point];
-    start;
     node [shape=circle];
-    s0;
     
-    node [shape=doublecircle] s1;
-
-    // Rule
-    start -> s0 [label="start"];
-    s0 -> s1 [label="lower/uppercase letter (LUL)"];
-    s1 -> s1 [label="LUL | digit"];
+    start [style=invis];
+    start -> S0;
+    
+    S0 -> S1 [label="digit"];
+    S0 -> S2 [label="."];
+    
+    S1 -> S1 [label="digit"];
+    S1 -> S3 [label="."];
+    S1 -> S4 [label="e/E"];
+    
+    S2 -> S5 [label="digit"];
+    
+    S3 -> S6 [label="digit"];
+    S3 -> S4 [label="e/E"];
+    
+    S4 -> S7 [label="+/-"];
+    S4 -> S8 [label="digit"];
+    
+    S5 -> S6 [label="digit"];
+    
+    S6 -> S6 [label="digit"];
+    S6 -> S7 [label="+/-"];
+    
+    S7 -> S8 [label="digit"];
+    
+    S8 -> S8 [label="digit"];
+    
+    S1 -> end;
+    S2 -> end;
+    S3 -> end;
+    S6 -> end;
+    S8 -> end;
 }
