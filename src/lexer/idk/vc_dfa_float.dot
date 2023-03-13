@@ -1,0 +1,82 @@
+digraph vc_dfa_float {
+  /**
+   * Graph layout: Left to right.
+   */
+  rankdir = LR;
+  
+  /**
+   * States.
+   */
+  // Start state.
+  node [shape = point;];
+  start;
+  node [shape = circle;];
+  state_start [label = "0";];
+  state_float_literal_intdotintstar [label = "82";];
+  // minus plus
+  state_float_e_plus_minus [label = "85";];
+  // .e
+  
+  // Accepting states.
+  node [shape = doublecircle;];
+  subgraph {
+    // Special characters.
+    // state_dot [label = "62";];
+    
+    // Literals.
+    //int type
+    state_int_literal [label = "81";];
+    //.1(23456..) type and 123(...).456(...) type
+    state_float_literal [label = "83";];
+    /**
+    * .1(23456..)e type 
+    * 1(23...).4(56...)e type
+    **/
+    state_float_literal_e [label = "84";];
+    /** 
+    * .1(23456..)e [+,-] 1(23456...) type
+    * 123(...).456(...)e [+,-] 123456(...) type
+    * .1(23456..)e1(23456...) type
+    * 1(23...).4(56...) type
+    * .e1(23...) [+,-] 4(56...) type
+    **/
+    state_float_literal_1 [label = "86";];
+
+    /** 
+    * .e type type
+    * 1(23...).e type
+    **/
+    state_float_e_1 [label = "87";];
+    /** 
+    * .e1(23456...) type 
+    * 1(23456....).e1(23456...) type 
+    **/
+    state_float_literal_2 [label = "88";];
+  }
+  
+  // Error state.
+  node [shape = doublecircle; color = red;];
+  state_error [label = "420";];
+  
+  // Int Literals.
+  state_start -> state_int_literal [label = "[0-9]";];
+  state_int_literal -> state_int_literal [label = "[0-9]";];
+  state_int_literal -> state_error [label = "[^0-9\\.]"; color = "red";];
+  
+  // Float Literals. TODO
+
+  state_int_literal -> state_float_literal_intdotintstar [label = "\\.";];
+  state_float_literal_intdotintstar -> state_float_literal [label = "[0-9]";];
+  state_start -> state_float_literal_intdotintstar [label = "\\.";];
+  state_float_literal_intdotintstar -> state_float_e_1 [label = "e";];
+  state_float_e_1 -> state_float_literal_2 [label = "[0-9]";];
+  state_float_literal_2 -> state_float_e_plus_minus [label = "[+, -]";];
+  
+  state_float_literal -> state_float_literal [label = "[0-9]";];
+  state_float_literal -> state_float_literal_e [label = "e";];
+  state_float_literal_e -> state_float_e_plus_minus [label = "[+, -]";];
+  state_float_literal_e -> state_float_literal_1 [label = "[0-9]";];
+  state_float_literal_1 -> state_float_literal_1 [label = "[0-9]";];
+
+  state_float_e_plus_minus -> state_float_literal_1 [label = "[0-9]";];
+}

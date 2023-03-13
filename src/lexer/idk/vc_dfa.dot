@@ -1,330 +1,354 @@
 digraph vc_dfa {
-    /* Graph layout: Left to right. */
-    rankdir=LR;
-
-    /* States. */
-    // Start state.
-    node [shape = point]; 
-        start;
-    node [shape = circle]; 
-        state_start [label = "0"];
+  /**
+   * Graph layout: Left to right.
+   */
+  rankdir = LR;
+  
+  /**
+   * States.
+   */
+  // Start state.
+  node [shape = point;];
+  start;
+  node [shape = circle;];
+  state_start [label = "0";];
+  
+  // Other states.
+  node [shape = circle;];
+  subgraph {
+    // First letter of a keyword.
+    state_b [label = "1";];
+    state_c [label = "2";];
+    state_e [label = "3";];
+    state_f [label = "4";];
+    state_i [label = "5";];
+    state_r [label = "6";];
+    state_t [label = "7";];
+    state_v [label = "8";];
+    state_w [label = "9";];
     
-    // Other states.
-    node [shape = circle] {
-        // First letter of a keyword.
-        state_b [label = "1"];
-        state_c [label = "2"];
-        state_e [label = "3"];
-        state_f [label = "4"];
-        state_i [label = "5"];
-        state_r [label = "6"];
-        state_t [label = "7"];
-        state_v [label = "8"];
-        state_w [label = "9"];
-
-        // Second+ letters of a keyword.
-        state_bo [label = "10"];
-        state_boo [label = "11"];
-        state_bool [label = "12"];
-        state_boole [label = "13"];
-        state_boolea [label = "14"];
-
-        state_br [label = "16"];
-        state_bre [label = "17"];
-        state_brea [label = "18"];
-
-        state_co [label = "20"];
-        state_con [label = "21"];
-        state_cont [label = "22"];
-        state_conti [label = "23"];
-        state_contin [label = "24"];
-        state_continu [label = "25"];
-
-        state_el [label = "27"];
-        state_els [label = "28"];
-
-        state_fa [label = "30"];
-        state_fal [label = "31"];
-        state_fals [label = "32"];
-        
-        state_fo [label = "34"];
-
-        state_in [label = "37"];
-
-        state_re [label = "39"];
-        state_ret [label = "40"];
-        state_retu [label = "41"];
-        state_retur [label = "42"];
-
-        state_tr [label = "44"];
-        state_tru [label = "45"];
-
-        state_vo [label = "47"];
-        state_voi [label = "48"];
-        
-        state_wh [label = "50"];
-        state_whi [label = "51"];
-        state_whil [label = "52"];
-
-        // Logical operators.
-        state_and [label = "76"];
-        state_or [label = "77"];
-    }
-
-    // Accepting states.
-    node [shape = doublecircle] {
-        // Final character of a keyword.
-        state_boolean [label = "15"];
-        state_break [label = "19"];
-        state_continue [label = "26"];
-        state_else [label = "29"];
-        state_false [label = "33"];
-        state_for [label = "35"];
-        state_if [label = "36"];
-        state_int [label = "38"];
-        state_return [label = "43"];
-        state_true [label = "46"];
-        state_void [label = "49"];
-        state_while [label = "53"];
-
-        // Special characters.
-        state_lparen [label = "54"];
-        state_rparen [label = "55"];
-        state_lbrace [label = "56"];
-        state_rbrace [label = "57"];
-        state_lbracket [label = "58"];
-        state_rbracket [label = "59"];
-        state_semicolon [label = "60"];
-        state_comma [label = "61"];
-        state_dot [label = "62"];
-        state_bang [label = "63"];
-
-        // Operators.
-        state_plus [label = "64"];
-        state_minus [label = "65"];
-        state_star [label = "66"];
-        state_slash [label = "67"];
-        // state_percent [label = "68"]; Not needed.
-
-        state_lt [label = "69"];
-        state_le [label = "70"];
-        state_gt [label = "71"];
-        state_ge [label = "72"];
-
-        state_assign [label = "73"];
-        state_eq [label = "74"];
-        state_ne [label = "75"];
-
-        // Logical operators.
-        state_boolean_and [label = "78"];
-        state_boolean_or [label = "79"];     
-
-        // Identifiers.
-        state_identifier [label = "80"];  
-
-        // Literals.
-        state_int_literal [label = "81"];
-    } 
-
-    // Error state.
-    node [shape = doublecircle, color = red];
-        state_error [label = "420"];
-
-    // Transitions.
-    start -> state_start [label = "start"];
+    // Second+ letters of a keyword.
+    state_bo [label = "10";];
+    state_boo [label = "11";];
+    state_bool [label = "12";];
+    state_boole [label = "13";];
+    state_boolea [label = "14";];
     
-    // Boolean
-    state_start -> state_b [label = "b"];
-    state_b -> state_bo [label = "o"];
-    state_bo -> state_boo [label = "o"];
-    state_boo -> state_bool [label = "l"];
-    state_bool -> state_boole [label = "e"];
-    state_boole -> state_boolea [label = "a"];
-    state_boolea -> state_boolean [label = "n"];
-
-    state_b -> state_error [label = "[^or]", color = "red"];
-    state_bo -> state_error [label = "[^o]", color = "red"];
-    state_boo -> state_error [label = "[^l]", color = "red"];
-    state_bool -> state_error [label = "[^e]", color = "red"];
-    state_boole -> state_error [label = "[^a]", color = "red"];
-    state_boolea -> state_error [label = "[^n]", color = "red"];
-    state_boolean -> state_error [label = ".", color = "red"];
-
-    // Break
-    state_b -> state_br [label = "r"];
-    state_br -> state_bre [label = "e"];
-    state_bre -> state_brea [label = "a"];
-    state_brea -> state_break [label = "k"];
-
-    state_br -> state_error [label = "[^e]", color = "red"];
-    state_bre -> state_error [label = "[^a]", color = "red"];
-    state_brea -> state_error [label = "[^k]", color = "red"];
-    state_break -> state_error [label = ".", color = "red"];
+    state_br [label = "16";];
+    state_bre [label = "17";];
+    state_brea [label = "18";];
     
-    // Continue
-    state_start -> state_c [label = "c"];
-    state_c -> state_co [label = "o"];
-    state_co -> state_con [label = "n"];
-    state_con -> state_cont [label = "t"];
-    state_cont -> state_conti [label = "i"];
-    state_conti -> state_contin [label = "n"];
-    state_contin -> state_continu [label = "u"];
-    state_continu -> state_continue [label = "e"];
+    state_co [label = "20";];
+    state_con [label = "21";];
+    state_cont [label = "22";];
+    state_conti [label = "23";];
+    state_contin [label = "24";];
+    state_continu [label = "25";];
     
-    state_c -> state_error [label = "[^o]", color = "red"];
-    state_co -> state_error [label = "[^n]", color = "red"];
-    state_con -> state_error [label = "[^t]", color = "red"];
-    state_cont -> state_error [label = "[^i]", color = "red"];
-    state_conti -> state_error [label = "[^n]", color = "red"];
-    state_contin -> state_error [label = "[^u]", color = "red"];
-    state_continu -> state_error [label = "[^e]", color = "red"];
-    state_continue -> state_error [label = ".", color = "red"];
-
-    // Else
-    state_start -> state_e [label = "e", color = "red"];
-    state_e -> state_el [label = "l", color = "red"];
-    state_el -> state_els [label = "s", color = "red"];
-    state_els -> state_else [label = "e", color = "red"];
-
-    state_e -> state_error [label = "[^l]", color = "red"];
-    state_el -> state_error [label = "[^s]", color = "red"];
-    state_els -> state_error [label = "[^e]", color = "red"];
-    state_else -> state_error [label = ".", color = "red"];
-
-    // False
-    state_start -> state_f [label = "f"];
-    state_f -> state_fa [label = "a"];
-    state_fa -> state_fal [label = "l"];
-    state_fal -> state_fals [label = "s"];
-    state_fals -> state_false [label = "e"];
+    state_el [label = "27";];
+    state_els [label = "28";];
     
-    state_f -> state_error [label = "[^ao]", color = "red"];
-    state_fa -> state_error [label = "[^l]", color = "red"];
-    state_fal -> state_error [label = "[^s]", color = "red"];
-    state_fals -> state_error [label = "[^e]", color = "red"];
-    state_false -> state_error [label = ".", color = "red"];
-
-    // For
-    state_f -> state_fo [label = "o"];
-    state_fo -> state_for [label = "r"];
-
-    state_fo -> state_error [label = "[^r]", color = "red"];
-    state_for -> state_error [label = ".", color = "red"];
-
-    // If
-    state_start -> state_i [label = "i"];
-    state_i -> state_if [label = "f"];
-
-    state_i -> state_error [label = "[^fn]", color = "red"];
-    state_if -> state_error [label = ".", color = "red"];
-
-    // Int
-    state_i -> state_in [label = "n"];
-    state_in -> state_int [label = "t"];
-
-    state_in -> state_error [label = "[^t]", color = "red"];
-    state_int -> state_error [label = ".", color = "red"];
-
-    // Return
-    state_start -> state_r [label = "r"];
-    state_r -> state_re [label = "e"];
-    state_re -> state_ret [label = "t"];
-    state_ret -> state_retu [label = "u"];
-    state_retu -> state_retur [label = "r"];
-    state_retur -> state_return [label = "n"];
-
-    state_r -> state_error [label = "[^e]", color = "red"];
-    state_re -> state_error [label = "[^t]", color = "red"];
-    state_ret -> state_error [label = "[^u]", color = "red"];
-    state_retu -> state_error [label = "[^r]", color = "red"];
-    state_retur -> state_error [label = "[^n]", color = "red"];
-    state_return -> state_error [label = ".", color = "red"];
-
-    // True
-    state_start -> state_t [label = "t"];
-    state_t -> state_tr [label = "r"];
-    state_tr -> state_tru [label = "u"];
-    state_tru -> state_true [label = "e"];
-
-    state_t -> state_error [label = "[^r]", color = "red"];
-    state_tr -> state_error [label = "[^u]", color = "red"];
-    state_tru -> state_error [label = "[^e]", color = "red"];
-    state_true -> state_error [label = ".", color = "red"];
-
-    // Void
-    state_start -> state_v [label = "v"];
-    state_v -> state_vo [label = "o"];
-    state_vo -> state_voi [label = "i"];
-    state_voi -> state_void [label = "d"];
-
-    state_v -> state_error [label = "[^o]", color = "red"];
-    state_vo -> state_error [label = "[^i]", color = "red"];
-    state_voi -> state_error [label = "[^d]", color = "red"];
-    state_void -> state_error [label = ".", color = "red"];
-
-    // While
-    state_start -> state_w [label = "w"];
-    state_w -> state_wh [label = "h"];
-    state_wh -> state_whi [label = "i"];
-    state_whi -> state_whil [label = "l"];
-    state_whil -> state_while [label = "e"];
-
-    state_w -> state_error [label = "[^h]", color = "red"];
-    state_wh -> state_error [label = "[^i]", color = "red"];
-    state_whi -> state_error [label = "[^l]", color = "red"];
-    state_whil -> state_error [label = "[^e]", color = "red"];
-    state_while -> state_error [label = ".", color = "red"];
-
-    // Special characters (the double backslash is used to visualize the backslash in the graph).
-    state_start -> state_lparen [label = "\\("]; state_lparen -> state_error [label = ".", color = "red"];
-    state_start -> state_rparen [label = "\\)"]; state_rparen -> state_error [label = ".", color = "red"];
-    state_start -> state_lbrace [label = "\\{"]; state_lbrace -> state_error [label = ".", color = "red"];
-    state_start -> state_rbrace [label = "\\}"]; state_rbrace -> state_error [label = ".", color = "red"];
-    state_start -> state_lbracket [label = "\\["]; state_lbracket -> state_error [label = ".", color = "red"];
-    state_start -> state_rbracket [label = "\\]"]; state_rbracket -> state_error [label = ".", color = "red"];
-    state_start -> state_semicolon [label = ";"]; state_semicolon -> state_error [label = ".", color = "red"];
-    state_start -> state_comma [label = ","]; state_comma -> state_error [label = ".", color = "red"];
-    state_start -> state_dot [label = "\\."]; state_dot -> state_error [label = ".", color = "red"];
-    state_start -> state_bang [label = "!"]; state_bang -> state_error [label = ".", color = "red"];
-
-    // Arithmetic operators.
-    state_start -> state_plus [label = "\\+"]; state_plus -> state_error [label = ".", color = "red"];
-    state_start -> state_minus [label = "-"]; state_minus -> state_error [label = ".", color = "red"];
-    state_start -> state_star [label = "\\*"]; state_star -> state_error [label = ".", color = "red"];
-    state_start -> state_slash [label = "/"]; 
-    // State_comment will be implemented later.
-
-    // Relational operators.
-    state_start -> state_lt [label = "<"]; 
-    state_lt -> state_le [label = "="]; state_le -> state_error [label = ".", color = "red"];
-    state_start -> state_gt [label = ">"];
-    state_gt -> state_ge [label = "="]; state_ge -> state_error [label = ".", color = "red"];
-
-    // Assignment operator.
-    state_start -> state_assign [label = "="];
-
-    // Equality operators.
-    state_assign -> state_eq [label = "="]; state_eq -> state_error [label = ".", color = "red"];
-    state_bang -> state_ne [label = "="]; state_ne -> state_error [label = ".", color = "red"];
-
+    state_fa [label = "30";];
+    state_fal [label = "31";];
+    state_fals [label = "32";];
+    
+    state_fo [label = "34";];
+    
+    state_in [label = "37";];
+    
+    state_re [label = "39";];
+    state_ret [label = "40";];
+    state_retu [label = "41";];
+    state_retur [label = "42";];
+    
+    state_tr [label = "44";];
+    state_tru [label = "45";];
+    
+    state_vo [label = "47";];
+    state_voi [label = "48";];
+    
+    state_wh [label = "50";];
+    state_whi [label = "51";];
+    state_whil [label = "52";];
+    
     // Logical operators.
-    state_start -> state_and [label = "&"];
-    state_and -> state_boolean_and [label = "&"]; state_boolean_and -> state_error [label = ".", color = "red"];
-    state_start -> state_or [label = "\\|"]; 
-    state_or -> state_boolean_or [label = "\\|"]; state_boolean_or -> state_error [label = ".", color = "red"];
+    state_and [label = "76";];
+    state_or [label = "77";];
+  }
+  
+  // Accepting states.
+  node [shape = doublecircle;];
+  subgraph {
+    // Final character of a keyword.
+    state_boolean [label = "15";];
+    state_break [label = "19";];
+    state_continue [label = "26";];
+    state_else [label = "29";];
+    state_false [label = "33";];
+    state_for [label = "35";];
+    state_if [label = "36";];
+    state_int [label = "38";];
+    state_return [label = "43";];
+    state_true [label = "46";];
+    state_void [label = "49";];
+    state_while [label = "53";];
+    
+    // Special characters.
+    state_lparen [label = "54";];
+    state_rparen [label = "55";];
+    state_lbrace [label = "56";];
+    state_rbrace [label = "57";];
+    state_lbracket [label = "58";];
+    state_rbracket [label = "59";];
+    state_semicolon [label = "60";];
+    state_comma [label = "61";];
+    state_dot [label = "62";];
+    state_bang [label = "63";];
+    
+    // Operators.
+    state_plus [label = "64";];
+    state_minus [label = "65";];
+    state_star [label = "66";];
+    state_slash [label = "67";];
+    // state_percent [label = "68"]; Not needed.
+    
+    state_lt [label = "69";];
+    state_le [label = "70";];
+    state_gt [label = "71";];
+    state_ge [label = "72";];
+    
+    state_assign [label = "73";];
+    state_eq [label = "74";];
+    state_ne [label = "75";];
+    
+    // Logical operators.
+    state_boolean_and [label = "78";];
+    state_boolean_or [label = "79";];
     
     // Identifiers.
-    state_start -> state_identifier [label = "[a-zA-Z_]"];
-    state_identifier -> state_identifier [label = "[a-zA-Z0-9_]"];
-    state_identifier -> state_error [label = "[^a-zA-Z0-9_]", color = "red"];
-
-    // Int Literals.
-    state_start -> state_int_literal [label = "[0-9]"];
-    state_int_literal -> state_int_literal [label = "[0-9]"];
-    state_int_literal -> state_error [label = "[^0-9\\.]", color = "red"];
-
-    // Float Literals. TODO
-    state_int_literal -> state_float_literal_intdotintstar [label = "\\."];
-    state_float_literal_intdotintstar -> state_float_literal_intdotintstar [label = "[0-9]"];
-
+    state_identifier [label = "80";];
+    
+    // Literals.
+    state_int_literal [label = "81";];
+  }
+  
+  // Error state.
+  node [shape = doublecircle; color = red;];
+  state_error [label = "420";];
+  
+  // Transitions.
+  start -> state_start [label = "start";];
+  
+  // Boolean
+  state_start -> state_b [label = "b";];
+  state_b -> state_bo [label = "o";];
+  state_bo -> state_boo [label = "o";];
+  state_boo -> state_bool [label = "l";];
+  state_bool -> state_boole [label = "e";];
+  state_boole -> state_boolea [label = "a";];
+  state_boolea -> state_boolean [label = "n";];
+  
+  state_b -> state_error [label = "[^or]"; color = "red";];
+  state_bo -> state_error [label = "[^o]"; color = "red";];
+  state_boo -> state_error [label = "[^l]"; color = "red";];
+  state_bool -> state_error [label = "[^e]"; color = "red";];
+  state_boole -> state_error [label = "[^a]"; color = "red";];
+  state_boolea -> state_error [label = "[^n]"; color = "red";];
+  state_boolean -> state_error [label = "."; color = "red";];
+  
+  // Break
+  state_b -> state_br [label = "r";];
+  state_br -> state_bre [label = "e";];
+  state_bre -> state_brea [label = "a";];
+  state_brea -> state_break [label = "k";];
+  
+  state_br -> state_error [label = "[^e]"; color = "red";];
+  state_bre -> state_error [label = "[^a]"; color = "red";];
+  state_brea -> state_error [label = "[^k]"; color = "red";];
+  state_break -> state_error [label = "."; color = "red";];
+  
+  // Continue
+  state_start -> state_c [label = "c";];
+  state_c -> state_co [label = "o";];
+  state_co -> state_con [label = "n";];
+  state_con -> state_cont [label = "t";];
+  state_cont -> state_conti [label = "i";];
+  state_conti -> state_contin [label = "n";];
+  state_contin -> state_continu [label = "u";];
+  state_continu -> state_continue [label = "e";];
+  
+  state_c -> state_error [label = "[^o]"; color = "red";];
+  state_co -> state_error [label = "[^n]"; color = "red";];
+  state_con -> state_error [label = "[^t]"; color = "red";];
+  state_cont -> state_error [label = "[^i]"; color = "red";];
+  state_conti -> state_error [label = "[^n]"; color = "red";];
+  state_contin -> state_error [label = "[^u]"; color = "red";];
+  state_continu -> state_error [label = "[^e]"; color = "red";];
+  state_continue -> state_error [label = "."; color = "red";];
+  
+  // Else
+  state_start -> state_e [label = "e"; color = "red";];
+  state_e -> state_el [label = "l"; color = "red";];
+  state_el -> state_els [label = "s"; color = "red";];
+  state_els -> state_else [label = "e"; color = "red";];
+  
+  state_e -> state_error [label = "[^l]"; color = "red";];
+  state_el -> state_error [label = "[^s]"; color = "red";];
+  state_els -> state_error [label = "[^e]"; color = "red";];
+  state_else -> state_error [label = "."; color = "red";];
+  
+  // False
+  state_start -> state_f [label = "f";];
+  state_f -> state_fa [label = "a";];
+  state_fa -> state_fal [label = "l";];
+  state_fal -> state_fals [label = "s";];
+  state_fals -> state_false [label = "e";];
+  
+  state_f -> state_error [label = "[^ao]"; color = "red";];
+  state_fa -> state_error [label = "[^l]"; color = "red";];
+  state_fal -> state_error [label = "[^s]"; color = "red";];
+  state_fals -> state_error [label = "[^e]"; color = "red";];
+  state_false -> state_error [label = "."; color = "red";];
+  
+  // For
+  state_f -> state_fo [label = "o";];
+  state_fo -> state_for [label = "r";];
+  
+  state_fo -> state_error [label = "[^r]"; color = "red";];
+  state_for -> state_error [label = "."; color = "red";];
+  
+  // If
+  state_start -> state_i [label = "i";];
+  state_i -> state_if [label = "f";];
+  
+  state_i -> state_error [label = "[^fn]"; color = "red";];
+  state_if -> state_error [label = "."; color = "red";];
+  
+  // Int
+  state_i -> state_in [label = "n";];
+  state_in -> state_int [label = "t";];
+  
+  state_in -> state_error [label = "[^t]"; color = "red";];
+  state_int -> state_error [label = "."; color = "red";];
+  
+  // Return
+  state_start -> state_r [label = "r";];
+  state_r -> state_re [label = "e";];
+  state_re -> state_ret [label = "t";];
+  state_ret -> state_retu [label = "u";];
+  state_retu -> state_retur [label = "r";];
+  state_retur -> state_return [label = "n";];
+  
+  state_r -> state_error [label = "[^e]"; color = "red";];
+  state_re -> state_error [label = "[^t]"; color = "red";];
+  state_ret -> state_error [label = "[^u]"; color = "red";];
+  state_retu -> state_error [label = "[^r]"; color = "red";];
+  state_retur -> state_error [label = "[^n]"; color = "red";];
+  state_return -> state_error [label = "."; color = "red";];
+  
+  // True
+  state_start -> state_t [label = "t";];
+  state_t -> state_tr [label = "r";];
+  state_tr -> state_tru [label = "u";];
+  state_tru -> state_true [label = "e";];
+  
+  state_t -> state_error [label = "[^r]"; color = "red";];
+  state_tr -> state_error [label = "[^u]"; color = "red";];
+  state_tru -> state_error [label = "[^e]"; color = "red";];
+  state_true -> state_error [label = "."; color = "red";];
+  
+  // Void
+  state_start -> state_v [label = "v";];
+  state_v -> state_vo [label = "o";];
+  state_vo -> state_voi [label = "i";];
+  state_voi -> state_void [label = "d";];
+  
+  state_v -> state_error [label = "[^o]"; color = "red";];
+  state_vo -> state_error [label = "[^i]"; color = "red";];
+  state_voi -> state_error [label = "[^d]"; color = "red";];
+  state_void -> state_error [label = "."; color = "red";];
+  
+  // While
+  state_start -> state_w [label = "w";];
+  state_w -> state_wh [label = "h";];
+  state_wh -> state_whi [label = "i";];
+  state_whi -> state_whil [label = "l";];
+  state_whil -> state_while [label = "e";];
+  
+  state_w -> state_error [label = "[^h]"; color = "red";];
+  state_wh -> state_error [label = "[^i]"; color = "red";];
+  state_whi -> state_error [label = "[^l]"; color = "red";];
+  state_whil -> state_error [label = "[^e]"; color = "red";];
+  state_while -> state_error [label = "."; color = "red";];
+  
+  // Special characters (the double backslash is used to visualize the backslash in the graph).
+  state_start -> state_lparen [label = "\\(";];
+  state_lparen -> state_error [label = "."; color = "red";];
+  state_start -> state_rparen [label = "\\)";];
+  state_rparen -> state_error [label = "."; color = "red";];
+  state_start -> state_lbrace [label = "\\{";];
+  state_lbrace -> state_error [label = "."; color = "red";];
+  state_start -> state_rbrace [label = "\\}";];
+  state_rbrace -> state_error [label = "."; color = "red";];
+  state_start -> state_lbracket [label = "\\[";];
+  state_lbracket -> state_error [label = "."; color = "red";];
+  state_start -> state_rbracket [label = "\\]";];
+  state_rbracket -> state_error [label = "."; color = "red";];
+  state_start -> state_semicolon [label = ";";];
+  state_semicolon -> state_error [label = "."; color = "red";];
+  state_start -> state_comma [label = ",";];
+  state_comma -> state_error [label = "."; color = "red";];
+  state_start -> state_dot [label = "\\.";];
+  state_dot -> state_error [label = "."; color = "red";];
+  state_start -> state_bang [label = "!";];
+  state_bang -> state_error [label = "."; color = "red";];
+  
+  // Arithmetic operators.
+  state_start -> state_plus [label = "\\+";];
+  state_plus -> state_error [label = "."; color = "red";];
+  state_start -> state_minus [label = "-";];
+  state_minus -> state_error [label = "."; color = "red";];
+  state_start -> state_star [label = "\\*";];
+  state_star -> state_error [label = "."; color = "red";];
+  state_start -> state_slash [label = "/";];
+  // State_comment will be implemented later.
+  
+  // Relational operators.
+  state_start -> state_lt [label = "<";];
+  state_lt -> state_le [label = "=";];
+  state_le -> state_error [label = "."; color = "red";];
+  state_start -> state_gt [label = ">";];
+  state_gt -> state_ge [label = "=";];
+  state_ge -> state_error [label = "."; color = "red";];
+  
+  // Assignment operator.
+  state_start -> state_assign [label = "=";];
+  
+  // Equality operators.
+  state_assign -> state_eq [label = "=";];
+  state_eq -> state_error [label = "."; color = "red";];
+  state_bang -> state_ne [label = "=";];
+  state_ne -> state_error [label = "."; color = "red";];
+  
+  // Logical operators.
+  state_start -> state_and [label = "&";];
+  state_and -> state_boolean_and [label = "&";];
+  state_boolean_and -> state_error [label = "."; color = "red";];
+  state_start -> state_or [label = "\\|";];
+  state_or -> state_boolean_or [label = "\\|";];
+  state_boolean_or -> state_error [label = "."; color = "red";];
+  
+  // Identifiers.
+  state_start -> state_identifier [label = "[a-zA-Z_]";];
+  state_identifier -> state_identifier [label = "[a-zA-Z0-9_]";];
+  state_identifier -> state_error [label = "[^a-zA-Z0-9_]"; color = "red";];
+  
+  // Int Literals.
+  state_start -> state_int_literal [label = "[0-9]";];
+  state_int_literal -> state_int_literal [label = "[0-9]";];
+  state_int_literal -> state_error [label = "[^0-9\\.]"; color = "red";];
+  
+  // Float Literals. TODO
+  state_int_literal -> state_float_literal_intdotintstar [label = "\\.";];
+  //state_float_literal_intdotintstar -> state_float_literal_intdotintstar [label = "[0-9]";];
 }
