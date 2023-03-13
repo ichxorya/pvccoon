@@ -14,7 +14,7 @@ digraph vc_dfa_float {
   state_start [label = "0";];
   state_float_literal_intdotintstar [label = "82";];
   // minus plus
-  state_float_e_plus_minus [label = "85";];
+  state_float_e_plus_minus [label = "87";];
   // .e
   
   // Accepting states.
@@ -40,18 +40,18 @@ digraph vc_dfa_float {
      * 1(23...).4(56...) type
      * .e1(23...) [+,-] 4(56...) type
      */
-    state_float_literal_1 [label = "86";];
+    state_float_literal_1 [label = "88";];
     
     /**
      * .e type type
      * 1(23...).e type
      */
-    state_float_e_1 [label = "87";];
+    state_float_e_1 [label = "85";];
     /**
      * .e1(23456...) type 
      * 1(23456....).e1(23456...) type
      */
-    state_float_literal_2 [label = "88";];
+    state_float_literal_2 [label = "86";];
   }
   
   // Error state.
