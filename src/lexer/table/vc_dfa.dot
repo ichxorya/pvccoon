@@ -1,6 +1,6 @@
 // A few notes:
-// [^\Wx] is the regex for any letter/digit/underscore that is not x.
-// [\W] is the regex for any letter/digit/underscore.
+// Alphabet: [A-Za-z_] = [A-Z] + [a-z] + [_]
+// Alphanumeric: [A-Za-z0-9_] = Alphabet + [0-9]
   
 digraph vc_dfa {
   /**
@@ -26,6 +26,7 @@ digraph vc_dfa {
 
   node [shape = doublecircle; color = black];
   state_identifier [label = "6969"]; // Identifier.
+  state_eof [label = "999"]; // End of file.
   
   // Note: Stop states are either:
   // 1. A keyword.
@@ -35,6 +36,9 @@ digraph vc_dfa {
   // 5. A valid separator.
   // 6. A valid string.
   // 7. A valid comment.
+
+  // Start-to-EOF.
+  start_state -> state_eof [label = "End Of File"];
 
   // Start-to-identifier.
   start_state -> state_identifier [label = "[A-Za-z_]"];
@@ -157,18 +161,18 @@ digraph vc_dfa {
   state_whil -> state_while [label = "e"];
 
   // Identifiers from invalid keywords.
-  state_b -> state_identifier [label = "[^\\Wor]"];
-  state_bo -> state_identifier [label = "[^\\Wo]"];
-  state_boo -> state_identifier [label = "[^\\Wl]"];
-  state_bool -> state_identifier [label = "[^\\We]"];
-  state_boole -> state_identifier [label = "[^\\Wa]"];
-  state_boolea -> state_identifier [label = "[^\\Wn]"];
-  state_boolean -> state_identifier [label = "[\\W]"];
+  state_b -> state_identifier [label = "Alphanumeric except 'o' and 'r'"];
+  state_bo -> state_identifier [label = "Alphanumeric except 'o'"];
+  state_boo -> state_identifier [label = "Alphanumeric except 'l'"];
+  state_bool -> state_identifier [label = "Alphanumeric except 'e'"];
+  state_boole -> state_identifier [label = "Alphanumeric except 'a'"];
+  state_boolea -> state_identifier [label = "Alphanumeric except 'n'"];
+  state_boolean -> state_identifier [label = "Alphanumeric"];
 
-  state_br -> state_identifier [label = "[^\\We]"];
-  state_bre -> state_identifier [label = "[^\\Wa]"]; 
-  state_brea -> state_identifier [label = "[^\\Wk]"];
-  state_break -> state_identifier [label = "[\\W]"];
+  state_br -> state_identifier [label = "Alphanumeric except 'e'"];
+  state_bre -> state_identifier [label = "Alphanumeric except 'a'"]; 
+  state_brea -> state_identifier [label = "Alphanumeric except 'k'"];
+  state_break -> state_identifier [label = "Alphanumeric"];
 
   state_c -> state_identifier [label = "[^\\Wo]"];
   state_co -> state_identifier [label = "[^\\Wn]"];
@@ -221,6 +225,7 @@ digraph vc_dfa {
   state_while -> state_identifier [label = "[\\W]"];
 
   // Errors from invalid keywords.
+  // Should not be error if the label is 
   state_b -> state_error [label = "[^\\W]"];
   state_bo -> state_error [label = "[^\\W]"];
   state_boo -> state_error [label = "[^\\W]"];
