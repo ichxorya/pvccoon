@@ -18,7 +18,7 @@ digraph vc_dfa {
 
   start -> start_state;
   node [shape = doublecircle; color = red];
-  state_error [label = "69420"];
+  state_error [label = "69420"]; // Error.
 
   node [shape = doublecircle; color = black];
   state_identifier [label = "6969"]; // Identifier.
@@ -149,19 +149,20 @@ digraph vc_dfa {
   state_whil -> state_while [label = "e"];
 
   // Identifiers from invalid keywords.
-  // [^Wx] is the regex for any letter/digit/underscore that is not x.
+  // [^\Wx] is the regex for any letter/digit/underscore that is not x.
+  // [\W] is the regex for any letter/digit/underscore.
   state_b -> state_identifier [label = "[^\\Wor]"];
   state_bo -> state_identifier [label = "[^\\Wo]"];
   state_boo -> state_identifier [label = "[^\\Wl]"];
   state_bool -> state_identifier [label = "[^\\We]"];
   state_boole -> state_identifier [label = "[^\\Wa]"];
   state_boolea -> state_identifier [label = "[^\\Wn]"];
-  state_boolean -> state_identifier [label = "[0-9A-Za-z_]"];
+  state_boolean -> state_identifier [label = "[\\W]"];
 
   state_br -> state_identifier [label = "[^\\We]"];
   state_bre -> state_identifier [label = "[^\\Wa]"]; 
   state_brea -> state_identifier [label = "[^\\Wk]"];
-  state_break -> state_identifier [label = "[0-9A-Za-z_]"];
+  state_break -> state_identifier [label = "[\\W]"];
 
   state_c -> state_identifier [label = "[^\\Wo]"];
   state_co -> state_identifier [label = "[^\\Wn]"];
@@ -170,110 +171,112 @@ digraph vc_dfa {
   state_conti -> state_identifier [label = "[^\\Wn]"];
   state_contin -> state_identifier [label = "[^\\Wu]"];
   state_continu -> state_identifier [label = "[^\\We]"];
-  state_continue -> state_identifier [label = "[0-9A-Za-z_]"];
+  state_continue -> state_identifier [label = "[\\W]"];
 
   state_e -> state_identifier [label = "[^\\Wl]"];
   state_el -> state_identifier [label = "[^\\Ws]"];
   state_els -> state_identifier [label = "[^\\We]"];
-  state_else -> state_identifier [label = "[0-9A-Za-z_]"];
+  state_else -> state_identifier [label = "[\\W]"];
 
   state_f -> state_identifier [label = "[^\\Wao]"];
   state_fa -> state_identifier [label = "[^\\Wl]"];
   state_fal -> state_identifier [label = "[^\\Ws]"];
   state_fals -> state_identifier [label = "[^\\We]"];
-  state_false -> state_identifier [label = "[0-9A-Za-z_]"];
+  state_false -> state_identifier [label = "[\\W]"];
 
   state_fo -> state_identifier [label = "[^\\Wr]"];
-  state_for -> state_identifier [label = "[0-9A-Za-z_]"];
+  state_for -> state_identifier [label = "[\\W]"];
 
   state_i -> state_identifier [label = "[^\\Wn]"];
   state_in -> state_identifier [label = "[^\\Wt]"];
-  state_int -> state_identifier [label = "[0-9A-Za-z_]"];
+  state_int -> state_identifier [label = "[\\W]"];
 
   state_r -> state_identifier [label = "[^\\We]"];
   state_re -> state_identifier [label = "[^\\Wt]"];
   state_ret -> state_identifier [label = "[^\\Wu]"];
   state_retu -> state_identifier [label = "[^\\Wr]"];
   state_retur -> state_identifier [label = "[^\\Wn]"];
-  state_return -> state_identifier [label = "[0-9A-Za-z_]"];
+  state_return -> state_identifier [label = "[\\W]"];
 
   state_t -> state_identifier [label = "[^\\Wr]"];
   state_tr -> state_identifier [label = "[^\\Wu]"];
   state_tru -> state_identifier [label = "[^\\We]"];
-  state_true -> state_identifier [label = "[0-9A-Za-z_]"];
+  state_true -> state_identifier [label = "[\\W]"];
 
   state_v -> state_identifier [label = "[^\\Wo]"];
   state_vo -> state_identifier [label = "[^\\Wi]"];
   state_voi -> state_identifier [label = "[^\\Wd]"];
-  state_void -> state_identifier [label = "[0-9A-Za-z_]"];
+  state_void -> state_identifier [label = "[\\W]"];
 
   state_w -> state_identifier [label = "[^\\Wh]"];
   state_wh -> state_identifier [label = "[^\\Wi]"];
   state_whi -> state_identifier [label = "[^\\Wl]"];
   state_whil -> state_identifier [label = "[^\\We]"];
-  state_while -> state_identifier [label = "[0-9A-Za-z_]"];
+  state_while -> state_identifier [label = "[\\W]"];
 
   // Errors from invalid keywords.
-  state_b -> state_error [label = "[^0-9A-Za-z_]"];
-  state_bo -> state_error [label = "[^0-9A-Za-z_]"];
-  state_boo -> state_error [label = "[^0-9A-Za-z_]"];
-  state_bool -> state_error [label = "[^0-9A-Za-z_]"];
-  state_boole -> state_error [label = "[^0-9A-Za-z_]"];
-  state_boolea -> state_error [label = "[^0-9A-Za-z_]"];
-  state_boolean -> state_error [label = "[^0-9A-Za-z_]"];
+  state_b -> state_error [label = "[^\\W]"];
+  state_bo -> state_error [label = "[^\\W]"];
+  state_boo -> state_error [label = "[^\\W]"];
+  state_bool -> state_error [label = "[^\\W]"];
+  state_boole -> state_error [label = "[^\\W]"];
+  state_boolea -> state_error [label = "[^\\W]"];
+  state_boolean -> state_error [label = "[^\\W]"];
 
-  state_br -> state_error [label = "[^0-9A-Za-z_]"];
-  state_bre -> state_error [label = "[^0-9A-Za-z_]"];
-  state_brea -> state_error [label = "[^0-9A-Za-z_]"];
-  state_break -> state_error [label = "[^0-9A-Za-z_]"];
+  state_br -> state_error [label = "[^\\W]"];
+  state_bre -> state_error [label = "[^\\W]"];
+  state_brea -> state_error [label = "[^\\W]"];
+  state_break -> state_error [label = "[^\\W]"];
 
-  state_c -> state_error [label = "[^0-9A-Za-z_]"];
-  state_co -> state_error [label = "[^0-9A-Za-z_]"];
-  state_con -> state_error [label = "[^0-9A-Za-z_]"];
-  state_cont -> state_error [label = "[^0-9A-Za-z_]"];
-  state_conti -> state_error [label = "[^0-9A-Za-z_]"];
-  state_contin -> state_error [label = "[^0-9A-Za-z_]"];
-  state_continu -> state_error [label = "[^0-9A-Za-z_]"];
-  state_continue -> state_error [label = "[^0-9A-Za-z_]"];
+  state_c -> state_error [label = "[^\\W]"];
+  state_co -> state_error [label = "[^\\W]"];
+  state_con -> state_error [label = "[^\\W]"];
+  state_cont -> state_error [label = "[^\\W]"];
+  state_conti -> state_error [label = "[^\\W]"];
+  state_contin -> state_error [label = "[^\\W]"];
+  state_continu -> state_error [label = "[^\\W]"];
+  state_continue -> state_error [label = "[^\\W]"];
 
-  state_e -> state_error [label = "[^0-9A-Za-z_]"];
-  state_el -> state_error [label = "[^0-9A-Za-z_]"];
-  state_els -> state_error [label = "[^0-9A-Za-z_]"];
-  state_else -> state_error [label = "[^0-9A-Za-z_]"];
+  state_e -> state_error [label = "[^\\W]"];
+  state_el -> state_error [label = "[^\\W]"];
+  state_els -> state_error [label = "[^\\W]"];
+  state_else -> state_error [label = "[^\\W]"];
 
-  state_f -> state_error [label = "[^0-9A-Za-z_]"];
-  state_fa -> state_error [label = "[^0-9A-Za-z_]"];
-  state_fal -> state_error [label = "[^0-9A-Za-z_]"];
-  state_fals -> state_error [label = "[^0-9A-Za-z_]"];
-  state_false -> state_error [label = "[^0-9A-Za-z_]"];
+  state_f -> state_error [label = "[^\\W]"];
+  state_fa -> state_error [label = "[^\\W]"];
+  state_fal -> state_error [label = "[^\\W]"];
+  state_fals -> state_error [label = "[^\\W]"];
+  state_false -> state_error [label = "[^\\W]"];
 
-  state_fo -> state_error [label = "[^0-9A-Za-z_]"];
-  state_for -> state_error [label = "[^0-9A-Za-z_]"];
+  state_fo -> state_error [label = "[^\\W]"];
+  state_for -> state_error [label = "[^\\W]"];
 
-  state_i -> state_error [label = "[^0-9A-Za-z_]"];
-  state_in -> state_error [label = "[^0-9A-Za-z_]"];
-  state_int -> state_error [label = "[^0-9A-Za-z_]"];
+  state_i -> state_error [label = "[^\\W]"];
+  state_in -> state_error [label = "[^\\W]"];
+  state_int -> state_error [label = "[^\\W]"];
 
-  state_r -> state_error [label = "[^0-9A-Za-z_]"];
-  state_re -> state_error [label = "[^0-9A-Za-z_]"];
-  state_ret -> state_error [label = "[^0-9A-Za-z_]"];
-  state_retu -> state_error [label = "[^0-9A-Za-z_]"];
-  state_retur -> state_error [label = "[^0-9A-Za-z_]"];
-  state_return -> state_error [label = "[^0-9A-Za-z_]"];
+  state_r -> state_error [label = "[^\\W]"];
+  state_re -> state_error [label = "[^\\W]"];
+  state_ret -> state_error [label = "[^\\W]"];
+  state_retu -> state_error [label = "[^\\W]"];
+  state_retur -> state_error [label = "[^\\W]"];
+  state_return -> state_error [label = "[^\\W]"];
 
-  state_t -> state_error [label = "[^0-9A-Za-z_]"];
-  state_tr -> state_error [label = "[^0-9A-Za-z_]"];
-  state_tru -> state_error [label = "[^0-9A-Za-z_]"];
-  state_true -> state_error [label = "[^0-9A-Za-z_]"];
+  state_t -> state_error [label = "[^\\W]"];
+  state_tr -> state_error [label = "[^\\W]"];
+  state_tru -> state_error [label = "[^\\W]"];
+  state_true -> state_error [label = "[^\\W]"];
 
-  state_v -> state_error [label = "[^0-9A-Za-z_]"];
-  state_vo -> state_error [label = "[^0-9A-Za-z_]"];
-  state_voi -> state_error [label = "[^0-9A-Za-z_]"];
-  state_void -> state_error [label = "[^0-9A-Za-z_]"];
+  state_v -> state_error [label = "[^\\W]"];
+  state_vo -> state_error [label = "[^\\W]"];
+  state_voi -> state_error [label = "[^\\W]"];
+  state_void -> state_error [label = "[^\\W]"];
 
-  state_w -> state_error [label = "[^0-9A-Za-z_]"];
-  state_wh -> state_error [label = "[^0-9A-Za-z_]"];
-  state_whi -> state_error [label = "[^0-9A-Za-z_]"];
-  state_whil -> state_error [label = "[^0-9A-Za-z_]"];
-  state_while -> state_error [label = "[^0-9A-Za-z_]"];
+  state_w -> state_error [label = "[^\\W]"];
+  state_wh -> state_error [label = "[^\\W]"];
+  state_whi -> state_error [label = "[^\\W]"];
+  state_whil -> state_error [label = "[^\\W]"];
+  state_while -> state_error [label = "[^\\W]"];
+
+  
 }
