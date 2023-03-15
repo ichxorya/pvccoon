@@ -1,9 +1,12 @@
 digraph vc_dfa {
   /**
    * Graph layout: Left to right.
+   * Line style: Straight lines.
    */
   rankdir = LR;
-  
+  splines = line;
+
+
   /**
    * States.
    */
@@ -145,6 +148,7 @@ digraph vc_dfa {
   state_while [label = "52"]; // Keyword: while.
   state_whil -> state_while [label = "e"];
 
+  // Identifiers from invalid keywords.
   // [^Wx] is the regex for any letter/digit/underscore that is not x.
   state_b -> state_identifier [label = "[^\\Wor]"];
   state_bo -> state_identifier [label = "[^\\Wo]"];
@@ -208,4 +212,68 @@ digraph vc_dfa {
   state_whi -> state_identifier [label = "[^\\Wl]"];
   state_whil -> state_identifier [label = "[^\\We]"];
   state_while -> state_identifier [label = "[0-9A-Za-z_]"];
+
+  // Errors from invalid keywords.
+  state_b -> state_error [label = "[^0-9A-Za-z_]"];
+  state_bo -> state_error [label = "[^0-9A-Za-z_]"];
+  state_boo -> state_error [label = "[^0-9A-Za-z_]"];
+  state_bool -> state_error [label = "[^0-9A-Za-z_]"];
+  state_boole -> state_error [label = "[^0-9A-Za-z_]"];
+  state_boolea -> state_error [label = "[^0-9A-Za-z_]"];
+  state_boolean -> state_error [label = "[^0-9A-Za-z_]"];
+
+  state_br -> state_error [label = "[^0-9A-Za-z_]"];
+  state_bre -> state_error [label = "[^0-9A-Za-z_]"];
+  state_brea -> state_error [label = "[^0-9A-Za-z_]"];
+  state_break -> state_error [label = "[^0-9A-Za-z_]"];
+
+  state_c -> state_error [label = "[^0-9A-Za-z_]"];
+  state_co -> state_error [label = "[^0-9A-Za-z_]"];
+  state_con -> state_error [label = "[^0-9A-Za-z_]"];
+  state_cont -> state_error [label = "[^0-9A-Za-z_]"];
+  state_conti -> state_error [label = "[^0-9A-Za-z_]"];
+  state_contin -> state_error [label = "[^0-9A-Za-z_]"];
+  state_continu -> state_error [label = "[^0-9A-Za-z_]"];
+  state_continue -> state_error [label = "[^0-9A-Za-z_]"];
+
+  state_e -> state_error [label = "[^0-9A-Za-z_]"];
+  state_el -> state_error [label = "[^0-9A-Za-z_]"];
+  state_els -> state_error [label = "[^0-9A-Za-z_]"];
+  state_else -> state_error [label = "[^0-9A-Za-z_]"];
+
+  state_f -> state_error [label = "[^0-9A-Za-z_]"];
+  state_fa -> state_error [label = "[^0-9A-Za-z_]"];
+  state_fal -> state_error [label = "[^0-9A-Za-z_]"];
+  state_fals -> state_error [label = "[^0-9A-Za-z_]"];
+  state_false -> state_error [label = "[^0-9A-Za-z_]"];
+
+  state_fo -> state_error [label = "[^0-9A-Za-z_]"];
+  state_for -> state_error [label = "[^0-9A-Za-z_]"];
+
+  state_i -> state_error [label = "[^0-9A-Za-z_]"];
+  state_in -> state_error [label = "[^0-9A-Za-z_]"];
+  state_int -> state_error [label = "[^0-9A-Za-z_]"];
+
+  state_r -> state_error [label = "[^0-9A-Za-z_]"];
+  state_re -> state_error [label = "[^0-9A-Za-z_]"];
+  state_ret -> state_error [label = "[^0-9A-Za-z_]"];
+  state_retu -> state_error [label = "[^0-9A-Za-z_]"];
+  state_retur -> state_error [label = "[^0-9A-Za-z_]"];
+  state_return -> state_error [label = "[^0-9A-Za-z_]"];
+
+  state_t -> state_error [label = "[^0-9A-Za-z_]"];
+  state_tr -> state_error [label = "[^0-9A-Za-z_]"];
+  state_tru -> state_error [label = "[^0-9A-Za-z_]"];
+  state_true -> state_error [label = "[^0-9A-Za-z_]"];
+
+  state_v -> state_error [label = "[^0-9A-Za-z_]"];
+  state_vo -> state_error [label = "[^0-9A-Za-z_]"];
+  state_voi -> state_error [label = "[^0-9A-Za-z_]"];
+  state_void -> state_error [label = "[^0-9A-Za-z_]"];
+
+  state_w -> state_error [label = "[^0-9A-Za-z_]"];
+  state_wh -> state_error [label = "[^0-9A-Za-z_]"];
+  state_whi -> state_error [label = "[^0-9A-Za-z_]"];
+  state_whil -> state_error [label = "[^0-9A-Za-z_]"];
+  state_while -> state_error [label = "[^0-9A-Za-z_]"];
 }
