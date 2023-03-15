@@ -1,10 +1,14 @@
+// A few notes:
+// [^\Wx] is the regex for any letter/digit/underscore that is not x.
+// [\W] is the regex for any letter/digit/underscore.
+  
 digraph vc_dfa {
   /**
    * Graph layout: Left to right.
    * Line style: Straight lines.
    */
   rankdir = LR;
-  splines = line;
+  splines = polyline;
 
 
   /**
@@ -31,6 +35,10 @@ digraph vc_dfa {
   // 5. A valid separator.
   // 6. A valid string.
   // 7. A valid comment.
+
+  // Start-to-identifier.
+  start_state -> state_identifier [label = "[A-Za-z_]"];
+  state_identifier -> state_identifier [label = "[\\W]"];
 
   // Keywords/Identifiers.
   state_b [label = "1"];
@@ -149,8 +157,6 @@ digraph vc_dfa {
   state_whil -> state_while [label = "e"];
 
   // Identifiers from invalid keywords.
-  // [^\Wx] is the regex for any letter/digit/underscore that is not x.
-  // [\W] is the regex for any letter/digit/underscore.
   state_b -> state_identifier [label = "[^\\Wor]"];
   state_bo -> state_identifier [label = "[^\\Wo]"];
   state_boo -> state_identifier [label = "[^\\Wl]"];
