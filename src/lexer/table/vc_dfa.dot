@@ -2,6 +2,7 @@
 // Alphabet: [A-Za-z_] = [A-Z] + [a-z] + [_]
 // Alphanumeric: [A-Za-z0-9_] = Alphabet + Digit
 // Digit: [0-9]
+// Newline literal: Literally new line (not \n).
   
 digraph vc_dfa {
 // Start of Graph.
@@ -327,6 +328,37 @@ digraph vc_dfa {
   state_float_literal_3a1 [label = "82"];
   start_state -> state_float_literal_3a1 [label = "."];
   state_float_literal_3a1 -> state_float_literal_1 [label = "Digit"];
+}
+
+  // String literals.
+{
+  state_first_double_quote [label = "83"];
+  start_state -> state_first_double_quote [label = "\""];
+  state_first_double_quote -> state_first_double_quote [label = "Any character except \" and Newline literal"];
+  state_first_double_quote -> state_error [label = "Newline literal"];
+  node [shape = "doublecircle"];
+  state_second_double_quote [label = "84"];
+  state_first_double_quote -> state_second_double_quote [label = "\""];
+}
+
+  // Comments.
+{
+  // Oneline comment.
+  state_second_slash [label = "85"]; 
+  state_slash -> state_second_slash [label = "/"];
+  state_second_slash -> state_second_slash [label = "Any character except Newline literal"];
+
+  // Multiline comment.
+  node [shape = "circle"]
+  state_multiline_comment_star_open [label = "86"];
+  state_slash -> state_multiline_comment_star_open [label = "*"];
+  state_multiline_comment_star_open -> state_multiline_comment_star_open [label = "Any character"];
+  state_multiline_comment_star_close [label = "87"];
+  state_multiline_comment_star_open -> state_multiline_comment_star_close [label = "*"];
+
+  node [shape = "doublecircle"]
+  state_multiline_comment_slash_close [label = "88"];
+  state_multiline_comment_star_open -> state_multiline_comment_slash_close [label = "*"]; 
 }
 
 // End of Graph.
