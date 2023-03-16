@@ -306,7 +306,22 @@ digraph vc_dfa {
   start_state -> state_int_literal [label = "Digit"];
   state_int_literal -> state_int_literal [label = "Digit"];
 
-  // Floating point literals.
+  // Floating point literals. // TODO Finish float; string; ....
+  // Type 1: int+ .
+  // Type 2: int+ .? E|e +|-? int+
+  state_float_literal_1 [label = "78"]; 
+  state_int_literal -> state_float_literal_1 [label = "."];
+  state_float_literal_2 [label = "79"]; 
+  node [shape = "circle"];
+  state_float_literal_2a1 [label = "80"];
+  state_float_literal_1 -> state_float_literal_1 [label = "Digit"];
+  state_int_literal -> state_float_literal_2a1 [label = "'E' or 'e'"];
+  state_float_literal_1 -> state_float_literal_2a1 [label = "'E' or 'e'"];
+  state_float_literal_2a2 [label = "81"];
+  state_float_literal_2a1 -> state_float_literal_2a2 [label = "'+' or '-'"];
+  state_float_literal_2a2 -> state_float_literal_2 [label = "Digit"];
+  state_float_literal_2a1 -> state_float_literal_2 [label = "Digit"];
+  state_float_literal_2 -> state_float_literal_2 [label = "Digit"];
 }
 
 // End of Graph.
