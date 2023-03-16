@@ -306,7 +306,7 @@ digraph vc_dfa {
   start_state -> state_int_literal [label = "Digit"];
   state_int_literal -> state_int_literal [label = "Digit"];
 
-  // Floating point literals. // TODO Finish float; string; ....
+  // Floating point literals. // TODO Finish float; string; comments ....
   // Type 1: int+ .
   // Type 2: int+ .? E|e +|-? int+
   state_float_literal_1 [label = "78"]; 
