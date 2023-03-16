@@ -275,4 +275,22 @@ digraph vc_dfa {
   state_neq [label = "68"];
   state_logical_not -> state_neq [label = "!"];
   
+  // Separators.
+  state_semicolon [label = "69"];
+  start_state -> state_semicolon [label = ";"];
+  state_comma [label = "70"];
+  start_state -> state_comma [label = ","];
+  state_lbrace [label = "71"];
+  start_state -> state_lbrace [label = "{"];
+  state_rbrace [label = "72"];
+  start_state -> state_rbrace [label = "}"];
+  state_lparen [label = "73"];
+  start_state -> state_lparen [label = "("];
+  state_rparen [label = "74"];
+  start_state -> state_rparen [label = ")"];
+  state_lbracket [label = "75"];
+  start_state -> state_lbracket [label = "["];
+  state_rbracket [label = "76"];
+  start_state -> state_rbracket [label = "]"];
+  
 }
