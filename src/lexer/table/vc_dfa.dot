@@ -1,8 +1,11 @@
 // A few notes:
 // Alphabet: [A-Za-z_] = [A-Z] + [a-z] + [_]
-// Alphanumeric: [A-Za-z0-9_] = Alphabet + [0-9]
+// Alphanumeric: [A-Za-z0-9_] = Alphabet + Digit
+// Digit: [0-9]
   
 digraph vc_dfa {
+// Start of Graph.
+
   /**
    * Graph layout: Left to right.
    * Line style: Straight lines.
@@ -41,7 +44,7 @@ digraph vc_dfa {
   start_state -> state_eof [label = "End Of File"];
 
   // Start-to-identifier.
-  start_state -> state_identifier [label = "Alphabet"];
+  start_state -> state_identifier [label = "Alphabet except for 'b', 'c', 'e', 'f', 'i', 'r', 't', 'v', 'w'"];
   state_identifier -> state_identifier [label = "Alphanumeric"];
 
   // Keywords/Identifiers.
@@ -241,7 +244,7 @@ digraph vc_dfa {
   start_state -> state_slash [label = "/"];
 
   // Assignment operator.
-  state_equal [label = "57"];
+  state_assignment [label = "57"];
   start_state -> state_assignment [label = "="];
 
   // Relational operators.
@@ -274,8 +277,10 @@ digraph vc_dfa {
   state_assignment -> state_eq [label = "="];
   state_neq [label = "68"];
   state_logical_not -> state_neq [label = "!"];
-  
+}
+
   // Separators.
+{
   state_semicolon [label = "69"];
   start_state -> state_semicolon [label = ";"];
   state_comma [label = "70"];
@@ -292,5 +297,17 @@ digraph vc_dfa {
   start_state -> state_lbracket [label = "["];
   state_rbracket [label = "76"];
   start_state -> state_rbracket [label = "]"];
-  
+}
+
+  // Numeric literals.
+{
+  // Integer literals.
+  state_int_literal [label = "77"];
+  start_state -> state_int_literal [label = "Digit"];
+  state_int_literal -> state_int_literal [label = "Digit"];
+
+  // Floating point literals.
+}
+
+// End of Graph.
 }

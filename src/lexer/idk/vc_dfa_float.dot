@@ -17,6 +17,8 @@ digraph vc_dfa_float {
   state_float_e_plus_minus [label = "87";];
   // .e
   
+  start -> state_start;
+
   // Accepting states.
   node [shape = doublecircle;];
   subgraph {
