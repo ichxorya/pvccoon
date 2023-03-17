@@ -47,7 +47,7 @@ digraph vc_dfa {
   start_state -> state_eof [label = "End Of File"];
 
   // Start-to-identifier.
-  start_state -> state_identifier [label = "Alphabet"]; // Bug??
+  start_state -> state_identifier [label = "Alphabet except 'b', 'c', 'e', 'f', 'i', 'r', 't', 'v', 'w'"]; 
   state_identifier -> state_identifier [label = "Alphanumeric"];
 
   // Keywords/Identifiers.
