@@ -30,7 +30,7 @@ digraph vc_dfa {
 
   node [shape = doublecircle; color = black];
   state_identifier [label = "6969"]; // Identifier.
-  state_eof [label = "999"]; // End of file.
+  state_eof [label = "999"]; // End Of File.
   
   // Note: Stop states are either:
   // 1. A keyword.
@@ -40,14 +40,14 @@ digraph vc_dfa {
   // 5. A valid separator.
   // 6. A valid string.
   // 7. A valid comment.
-  // 8. End of file.
+  // 8. End Of File.
   // 9. Error.
 
   // Start-to-EOF.
   start_state -> state_eof [label = "End Of File"];
 
   // Start-to-identifier.
-  start_state -> state_identifier [label = "Alphabet except for 'b', 'c', 'e', 'f', 'i', 'r', 't', 'v', 'w'"];
+  start_state -> state_identifier [label = "Alphabet"]; // Bug??
   state_identifier -> state_identifier [label = "Alphanumeric"];
 
   // Keywords/Identifiers.
