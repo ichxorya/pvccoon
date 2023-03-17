@@ -14,8 +14,8 @@ A compiler for the VC language, which is a subset of the C language.
 # Note: Should remove unused dependencies.
 [dependencies]
 # Compiler-compiler related crates.
-logos = "0.12.1" # Lexer-generator.
-combine = "4.6.6" # LL(1) Parser-generator.
+logos = "0.12.1" # Lexer-generator. Unused.
+combine = "4.6.6" # LL(1) Parser-generator. Unused.
 
 # Unicode related crates.
 unic = "0.9.0" # Unicode and Internationalization Crates.
@@ -60,6 +60,7 @@ libc = "0.2.139" # Rust FFI bindings to libc.
 # Miscellaneous crates.
 once_cell = "1.17.0" # Single assignment cells and lazy values.
 lsp-types = "0.94.0" # Types for interaction with a language server.
+petgraph = "0.6.3" # Graph datatype.
 
 # Dev-dependencies a.k.a. test/example/benchmark dependencies.
 [dev-dependencies]

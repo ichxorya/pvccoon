@@ -40,6 +40,8 @@ digraph vc_dfa {
   // 5. A valid separator.
   // 6. A valid string.
   // 7. A valid comment.
+  // 8. End of file.
+  // 9. Error.
 
   // Start-to-EOF.
   start_state -> state_eof [label = "End Of File"];
@@ -195,7 +197,7 @@ digraph vc_dfa {
   state_els -> state_identifier [label = "Alphanumeric except 'e'"];
   state_else -> state_identifier [label = "Alphanumeric"];
 
-  state_f -> state_identifier [label = "Alphanumeric except 'f' and 'o'"];
+  state_f -> state_identifier [label = "Alphanumeric except 'a' and 'o'"];
   state_fa -> state_identifier [label = "Alphanumeric except 'l'"];
   state_fal -> state_identifier [label = "Alphanumeric except 's'"];
   state_fals -> state_identifier [label = "Alphanumeric except 'e'"];
