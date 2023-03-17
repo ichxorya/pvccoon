@@ -358,7 +358,7 @@ digraph vc_dfa {
 
   node [shape = "doublecircle"]
   state_multiline_comment_slash_close [label = "88"];
-  state_multiline_comment_star_open -> state_multiline_comment_slash_close [label = "*"]; 
+  state_multiline_comment_star_close -> state_multiline_comment_slash_close [label = "/"]; 
 }
 
 // End of Graph.
