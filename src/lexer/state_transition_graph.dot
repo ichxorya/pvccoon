@@ -113,6 +113,15 @@ digraph vc_dfa {
   state_false [label = "28"]; // Keyword: false.
   state_fals -> state_false [label = "e"];
 
+  state_fl [label = "90"];
+  state_f -> state_fl [label = "l"];
+  state_flo [label = "91"];
+  state_fl -> state_flo [label = "o"];
+  state_floa [label = "92"];
+  state_flo -> state_floa [label = "a"];
+  state_float [label = "93"]; // Keyword: float.
+  state_floa -> state_float [label = "t"]; 
+
   state_fo [label = "29"];
   state_f -> state_fo [label = "o"];
   state_for [label = "30"]; // Keyword: for.
@@ -124,6 +133,9 @@ digraph vc_dfa {
   state_i -> state_in [label = "n"];
   state_int [label = "33"]; // Keyword: int.
   state_in -> state_int [label = "t"];
+
+  state_if [label = "89"];
+  state_i -> state_if [label = "f"]; // Keyword: if.
 
   state_r [label = "34"];
   start_state -> state_r [label = "r"];
@@ -197,18 +209,25 @@ digraph vc_dfa {
   state_els -> state_identifier [label = "Alphanumeric except 'e'"];
   state_else -> state_identifier [label = "Alphanumeric"];
 
-  state_f -> state_identifier [label = "Alphanumeric except 'a' and 'o'"];
+  state_f -> state_identifier [label = "Alphanumeric except 'a' and 'o' and 'l'"];
   state_fa -> state_identifier [label = "Alphanumeric except 'l'"];
   state_fal -> state_identifier [label = "Alphanumeric except 's'"];
   state_fals -> state_identifier [label = "Alphanumeric except 'e'"];
   state_false -> state_identifier [label = "Alphanumeric"];
 
+  state_fl -> state_identifier [label = "Alphanumeric except 'o'"];
+  state_flo -> state_identifier [label = "Alphanumeric except 'a'"];
+  state_floa -> state_identifier [label = "Alphanumeric except 't'"];
+  state_float -> state_identifier [label = "Alphanumeric"];
+
   state_fo -> state_identifier [label = "Alphanumeric except 'r'"];
   state_for -> state_identifier [label = "Alphanumeric"];
 
-  state_i -> state_identifier [label = "Alphanumeric except 'n'"];
+  state_i -> state_identifier [label = "Alphanumeric except 'n' and 'f'"];
   state_in -> state_identifier [label = "Alphanumeric except 't'"];
   state_int -> state_identifier [label = "Alphanumeric"];
+
+  state_if -> state_identifier [label = "Alphanumeric"];
 
   state_r -> state_identifier [label = "Alphanumeric except 'e']"];
   state_re -> state_identifier [label = "Alphanumeric except 't']"];
