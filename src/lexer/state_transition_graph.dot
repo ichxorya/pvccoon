@@ -376,6 +376,7 @@ digraph vc_dfa {
   state_multiline_comment_star_open -> state_multiline_comment_star_open [label = "Any character"];
   state_multiline_comment_star_close [label = "87"];
   state_multiline_comment_star_open -> state_multiline_comment_star_close [label = "*"];
+  state_multiline_comment_star_close -> state_multiline_comment_star_open [label = "Any character except '/'"]
 
   node [shape = "doublecircle"]
   state_multiline_comment_slash_close [label = "88"];

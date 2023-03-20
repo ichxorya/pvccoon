@@ -1,5 +1,5 @@
 pub mod lexer;
 
 fn main() {
-    println!("Hello, world!");
+    lexer::load_files("src/lexer/test.vc");
 }
