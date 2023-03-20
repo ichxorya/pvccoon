@@ -69,8 +69,11 @@ class Utils:
     # get_next_state(data, state, key): Get the next state from the current state and some input (key).
     def get_next_state(self, state, key):
         # Get the value
-        return self.data[self.map_state[state]][self.map_key[key]]
-    
+        try:
+            return self.data[self.map_state[state]][self.map_key[key]]
+        except:
+            return "0"
+        
     # write_tokens(tokens: list): Write the tokens to a file.
     def write_tokens(self, tokens: list):
         # Write the tokens to a file.

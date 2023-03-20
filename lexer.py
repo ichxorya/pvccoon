@@ -46,7 +46,7 @@ if __name__ == "__main__":
         # Get the next state.
         next_state = utils.get_next_state(current_state, current_char)
         if next_state == "69420": # Error state.
-            print("ERROR 2")
+            print("ERROR")
             sys.exit(1)
 
         # If current character is a whitespace/new line, skip it.
@@ -66,8 +66,11 @@ if __name__ == "__main__":
             while next_state != "":
                 # Update the current state and token.
                 current_state = next_state
+                print(current_state)
                 current_token += current_char
                 current_position += 1
+                current_char = next_char
+                print(current_token)
 
                 # Get the next character.
                 if current_position + 1 < len(source_code):
