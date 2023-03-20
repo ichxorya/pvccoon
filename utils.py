@@ -72,7 +72,7 @@ class Utils:
         try:
             return self.data[self.map_state[state]][self.map_key[key]]
         except:
-            return "0"
+            return ""
         
     # write_tokens(tokens: list): Write the tokens to a file.
     def write_tokens(self, tokens: list):
