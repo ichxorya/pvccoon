@@ -54,35 +54,75 @@ class Utils:
             return self.data[self.map_state[state]][self.map_key[key]]
         except:
             return ""
-        
+
     # write_tokens(self, tokens: list): Write the tokens to a file.
     def write_tokens(self, tokens: list):
         # Write the tokens to a file.
         with open("tokens.vctok", "w") as file:
             file.write("\n".join(tokens))
-    
+
     # is_keyword(self, state: str): Check if the current state is a keyword.
     def is_keyword(self, state: str):
-        return state in [
-            7, # boolean
-            11, # break
-            19, # continue
-            23, # else
-            28, # false
-            93, # float
-            30, # for
-            33, # int
-            89, # if
-            39, # return
-            43, # true
-            47, # void
-            52, # while
-        ]
+        try:
+            return int(state) in [
+                7,  # boolean
+                11,  # break
+                19,  # continue
+                23,  # else
+                28,  # false
+                93,  # float
+                30,  # for
+                33,  # int
+                89,  # if
+                39,  # return
+                43,  # true
+                47,  # void
+                52,  # while
+            ]
+        except:
+            return False
 
     # is_separator(self, state: str): Check if the current state is a separator.
     def is_separator(self, state: str):
-        return int(state) >= 69 and int(state) <= 76
-    
+        try:
+            return int(state) >= 69 and int(state) <= 76
+        except:
+            return False
+
     # is_operator_probably(self, state: str): Check if the current state is an operator (probably).
     def is_operator_probably(self, state: str):
-        return int(state) >= 1 and int(state) <= 2
+        try:
+            return int(state) >= 53 and int(state) <= 68
+        except:
+            return False
+
+    # is_operator_single(self, state: str): Check if the current state is an operator (single-char).
+    def is_operator_single(self, state: str):
+        try:
+            return int(state) in [
+                53,  # +
+                54,  # -
+                55,  # *
+                56,  # /
+                57,  # =
+                58,  # <
+                59,  # >
+                66,  # !
+            ]
+        except:
+            return False
+
+    # is_operator_double(self, cur_state: str, next_state: str): Check if the current state is an operator (double-char).
+    def is_operator_double(self, cur_state: str, next_state: str):
+        try:
+            cur_state, next_state = int(cur_state), int(next_state)
+            return (
+                (cur_state == 57 and next_state == 67) # ==
+                or (cur_state == 66 and next_state == 68) # !=
+                or (cur_state == 57 and next_state == 60) # <=
+                or (cur_state == 57 and next_state == 61) # >=
+                or (cur_state == 62 and next_state == 64) # &&
+                or (cur_state == 63 and next_state == 65) # ||
+            )
+        except:
+            return False

@@ -31,6 +31,9 @@ if __name__ == "__main__":
 
     # Loop through the source code.
     while current_position < len(source_code):
+        # Initialize the current token.
+        current_token = ""
+
         # Get the current character.
         current_char = source_code[current_position]
 
@@ -40,15 +43,12 @@ if __name__ == "__main__":
         else:
             next_char = ""
 
-        # Reset the current state.
-        current_state = "0"
-
-        # Get the next state.
-        next_state = utils.get_next_state(current_state, current_char)
+        # Get the next state (from the state 0, with the current character as input)
+        next_state = utils.get_next_state("0", current_char)
         
         # Exit if the state is error.
         if next_state == "69420":
-            print("ERROR")
+            print(f"Error: Error state reached, position {current_position}.")
             sys.exit(1)
 
         # If the current character is a whitespace/new line, skip it.
@@ -64,10 +64,30 @@ if __name__ == "__main__":
         
         # If the current character is a operator...
         if utils.is_operator_probably(next_state):
-            pass
+            # Next of next state.
+            next_next_state = utils.get_next_state(next_state, next_char)
 
+            # If the next character is not-probably an operator...
+            if utils.is_operator_probably(next_next_state) == False:
+                # If the current character is a operator, add it to the tokens.
+                if utils.is_operator_single(next_state):
+                    tokens.append(current_char)
+                    current_position += 1
+                    continue
+                else:
+                    # Error with single '&' and '|'
+                    print(f"Error: The {current_char} should be {current_char + current_char}, position {current_position}.")
+                    sys.exit(1)
+            else:
+                # If the next character is an operator, add it to the current token.
+                if utils.is_operator_double(next_state, next_next_state):
+                    current_token += current_char + next_char
+                    tokens.append(current_token)
+                    current_position += 2
+                    continue
+
+        # Update position.
         current_position += 1
-        current_token = ""
 
     # Write the tokens to a file.
     utils.write_tokens(tokens)       

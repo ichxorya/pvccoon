@@ -1,0 +1,7 @@
+   int main() {
+        int b = 100;
+
+
+
+        boolean k = (100 != b &&&& b > 10);
+}
