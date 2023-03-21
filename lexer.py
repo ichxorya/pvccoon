@@ -45,14 +45,14 @@ if __name__ == "__main__":
 
         # Get the next state (from the state 0, with the current character as input)
         next_state = utils.get_next_state("0", current_char)
-        
+
         # Exit if the state is error.
         if next_state == "69420":
             print(f"Error: Error state reached, position {current_position}.")
             sys.exit(1)
 
         # If the current character is a whitespace/new line, skip it.
-        if current_char in utils.whitespaces or current_char in utils.new_line:
+        if current_char in utils.whitespaces or current_char in utils.new_lines:
             current_position += 1
             continue
 
@@ -61,7 +61,7 @@ if __name__ == "__main__":
             tokens.append(current_char)
             current_position += 1
             continue
-        
+
         # If the current character is a operator...
         if utils.is_operator_probably(next_state):
             # Next of next state.
@@ -76,7 +76,9 @@ if __name__ == "__main__":
                     continue
                 else:
                     # Exit with the error with single '&' and '|'.
-                    print(f"Error: The {current_char} should be {current_char + current_char}, position {current_position}.")
+                    print(
+                        f"Error: The {current_char} should be {current_char + current_char}, position {current_position}."
+                    )
                     sys.exit(1)
             else:
                 # If the next character is an operator, add it to the current token.
@@ -85,9 +87,33 @@ if __name__ == "__main__":
                     tokens.append(current_token)
                     current_position += 2
                     continue
+                
+        # If the current character is a number...
+        if utils.is_number(next_state):
+            while utils.is_number(next_state):
+                # Add the current character to the current token.
+                current_token += current_char
+                print(f"current number: {current_token}, current pos: {current_position}")
+
+                # Get the next character.
+                current_position += 1
+                if current_position < len(source_code):
+                    current_char = source_code[current_position]
+                else:
+                    break
+                print(f"current number: {current_token}, current pos: {current_position}")
+
+                # Get the next state.
+                next_state = utils.get_next_state(next_state, current_char)
+
+            # Add the current token to the tokens.
+            tokens.append(current_token)
 
         # Update position.
         current_position += 1
+    
+    # End of file.
+    tokens.append("$")
 
     # Write the tokens to a file.
-    utils.write_tokens(tokens)       
+    utils.write_tokens(tokens)

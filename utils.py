@@ -17,8 +17,8 @@ class Utils:
         # Whitespaces list.
         self.whitespaces = [" ", "\t"]
 
-        # New line list.
-        self.new_line = ["\r", "\n", "\r\n"]
+        # New lines list.
+        self.new_lines = ["\r", "\n", "\r\n"]
 
     # get_input(self, path: str): Get the the source code as a string.
     def get_source_code(self, path: str):
@@ -51,6 +51,12 @@ class Utils:
     def get_next_state(self, state: str, key: str):
         # Get the value
         try:
+            # Special cases.
+            if key in self.whitespaces:
+                key = "Whitespace"
+            elif key in self.new_lines:
+                key = "Newline"
+            
             return self.data[self.map_state[state]][self.map_key[key]]
         except:
             return ""
@@ -124,5 +130,12 @@ class Utils:
                 or (cur_state == 62 and next_state == 64) # &&
                 or (cur_state == 63 and next_state == 65) # ||
             )
+        except:
+            return False
+        
+    # is_number(self, state: str): Check if the current state is a number.
+    def is_number(self, state: str):
+        try:
+            return int(state) == 77
         except:
             return False
