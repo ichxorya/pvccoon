@@ -75,7 +75,7 @@ if __name__ == "__main__":
                     current_position += 1
                     continue
                 else:
-                    # Error with single '&' and '|'
+                    # Exit with the error with single '&' and '|'.
                     print(f"Error: The {current_char} should be {current_char + current_char}, position {current_position}.")
                     sys.exit(1)
             else:
