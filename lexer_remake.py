@@ -38,7 +38,7 @@ if __name__ == "__main__":
         if next_char in utils.whitespaces:
             next_state = utils.get_next_state(current_state, "whitespaces")
         elif next_char in utils.new_line:
-            next_state = utils.get_next_state(current_state, "new_line")
+            next_state = utils.get_next_state(current_state, "newline")
         else:
             next_state = utils.get_next_state(current_state, next_char)
         
@@ -59,20 +59,17 @@ if __name__ == "__main__":
                 next_position += 1
                 continue
             case _:             # All state that can be follower by another state
-                if (current_state not in ["86", "83"]) and (next_char in utils.whitespaces or next_char in utils.new_line):        # skip and create new token when meet an whitespace outside "" and /**?
+                if (current_state not in ["86", "83"]) and (next_char in utils.whitespaces or next_char in utils.new_line):        # skip and create new token when meet an whitespaces and newline outside "" and /**?
                     next_position += 1
                     tokens.append([current_token, current_state])
                     current_state = "0"
                     current_token = ""
-                    continue    
-                print(current_token)
+                    continue
                 current_token = current_token + next_char
-                print(current_token)
                 current_state = next_state
                 next_position += 1
                 continue
 
     tokens = list(filter(lambda a: a[0] != "", tokens))  # Remove token create bt string of whitespace and newline
-    print(tokens)
     # Write the tokens to a file.
     utils.write_tokens(tokens)       
