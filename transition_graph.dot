@@ -298,7 +298,7 @@ digraph vc_dfa {
   state_eq [label = "67"];
   state_assignment -> state_eq [label = "="];
   state_neq [label = "68"];
-  state_logical_not -> state_neq [label = "!"];
+  state_logical_not -> state_neq [label = "="];
 }
 
   // Separators.

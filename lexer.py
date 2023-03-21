@@ -45,47 +45,26 @@ if __name__ == "__main__":
 
         # Get the next state.
         next_state = utils.get_next_state(current_state, current_char)
-        if next_state == "69420": # Error state.
+        
+        # Exit if the state is error.
+        if next_state == "69420":
             print("ERROR")
             sys.exit(1)
 
-        # If current character is a whitespace/new line, skip it.
+        # If the current character is a whitespace/new line, skip it.
         if current_char in utils.whitespaces or current_char in utils.new_line:
             current_position += 1
             continue
 
-        # If current character is a separator, add it to the tokens.
-        if current_char in utils.separators:
+        # If the current character is a separator, add it to the tokens.
+        if utils.is_separator(next_state):
             tokens.append(current_char)
             current_position += 1
             continue
-            
-        # If current character is a letter, check if it is a keyword.
-        if current_char.isalpha():
-            # While the next state is available, run until the next state is not available.
-            while next_state != "" and next_state != "69420":
-                # Update the current state and token.
-                current_state = next_state
-                current_token += current_char
-                current_position += 1
-                print(current_token)
-                print(current_state)
-
-                # Get the next character.
-                if current_position + 1 < len(source_code):
-                    next_char = source_code[current_position + 1]
-                else:
-                    next_char = ""
-
-                # Get the next state.
-                next_state = utils.get_next_state(current_state, next_char)
-                current_char = next_char
-            # If the current state is a keyword, add it to the tokens.
-            if utils.is_keyword(current_state):
-                tokens.append(current_token)
-            else:
-                tokens.append("identifier")
-
+        
+        # If the current character is a operator...
+        if utils.is_operator_probably(next_state):
+            pass
 
         current_position += 1
         current_token = ""
