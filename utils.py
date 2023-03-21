@@ -57,6 +57,8 @@ class Utils:
             elif key in self.new_lines:
                 key = "Newline"
             
+            print(f"State: {state}, Key: {key} -> {self.data[self.map_state[state]][self.map_key[key]]}")
+            
             return self.data[self.map_state[state]][self.map_key[key]]
         except:
             return ""

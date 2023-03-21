@@ -90,10 +90,10 @@ if __name__ == "__main__":
                 
         # If the current character is a number...
         if utils.is_number(next_state):
+            
             while utils.is_number(next_state):
                 # Add the current character to the current token.
                 current_token += current_char
-                print(f"current number: {current_token}, current pos: {current_position}")
 
                 # Get the next character.
                 current_position += 1
@@ -101,7 +101,6 @@ if __name__ == "__main__":
                     current_char = source_code[current_position]
                 else:
                     break
-                print(f"current number: {current_token}, current pos: {current_position}")
 
                 # Get the next state.
                 next_state = utils.get_next_state(next_state, current_char)
