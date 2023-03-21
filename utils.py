@@ -44,7 +44,7 @@ class Utils:
         # Read the source code.
         with open(path, "r") as file:
             # Return the source code with left strip and right strip.
-            return file.read().strip()
+            return file.read()
 
     # get_maps(data): Get the maps for states and keys.
     def get_maps(self, data: list):

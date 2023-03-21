@@ -30,52 +30,49 @@ if __name__ == "__main__":
 
     # Loop through the source code.
     while next_position < len(source_code):
+
         # Get the next character.
         next_char = source_code[next_position]
 
         # Get the next state.
-        next_state = utils.get_next_state(current_state, next_char)
-
-        # If current character is a whitespace/new line, skip it.
-        if next_char in utils.new_line:
-            next_position += 1
-            if current_state != "86":
-                tokens.append([current_token, current_state])
-                current_state = "0"
-                current_token = ""
-                continue
-            else:
-                next_position += 1
+        if next_char in utils.whitespaces:
+            next_state = utils.get_next_state(current_state, "whitespaces")
+        elif next_char in utils.new_line:
+            next_state = utils.get_next_state(current_state, "new_line")
+        else:
+            next_state = utils.get_next_state(current_state, next_char)
         
+        # Check the next state
         match next_state:
-            case "69420":
+            case "69420":       # Error
                 sys.exit(1)
-            case "":
+            case "":            # Any case that lead to "" (mean there's no next stage with next character) with cut the current token and save to tokens list, this case can deal with any next character that lead to end of current token (not counting whitespaces, may be add them later). e.g. i=2;
                 next_position += 1
-                tokens.append([current_token, current_state])
-                current_state = utils.get_next_state("0", next_char) 
-                current_token = "" + next_char
+                tokens.append([current_token, current_state])           # token list contains token and its end state
+                current_state = "0"                         
+                current_token = ""                        
                 continue
-            case None:
+            case None:          # Cut the token and save when find next state of states that dont appear in table (end state)
                 tokens.append([current_token, current_state])
                 current_state = "0"
                 current_token = ""
                 next_position += 1
-            case _: 
-                if current_state not in ["86", "83"] and next_char in utils.whitespaces:
+                continue
+            case _:             # All state that can be follower by another state
+                if (current_state not in ["86", "83"]) and (next_char in utils.whitespaces or next_char in utils.new_line):        # skip and create new token when meet an whitespace outside "" and /**?
                     next_position += 1
                     tokens.append([current_token, current_state])
                     current_state = "0"
                     current_token = ""
                     continue    
+                print(current_token)
                 current_token = current_token + next_char
+                print(current_token)
                 current_state = next_state
                 next_position += 1
                 continue
 
-    tokens = list(filter(lambda a: a[0] != " ", tokens))
-    tokens = list(filter(lambda a: a[0] != "", tokens))
-    tokens = list(filter(lambda a: a[0] != "\t", tokens))
+    tokens = list(filter(lambda a: a[0] != "", tokens))  # Remove token create bt string of whitespace and newline
     print(tokens)
     # Write the tokens to a file.
     utils.write_tokens(tokens)       
