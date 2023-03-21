@@ -90,7 +90,7 @@ if __name__ == "__main__":
                 
         # If the current character is a number...
         if utils.is_number(next_state):
-            
+            # While the next state is a number...
             while utils.is_number(next_state):
                 # Add the current character to the current token.
                 current_token += current_char
