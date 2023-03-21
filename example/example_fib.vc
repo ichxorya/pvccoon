@@ -7,7 +7,7 @@ void main() {
     int next;     /* The value of the (i+1)th fibonacci number */
     int twoaway;  /* The value of the (i+2)th fibonacci number */
 
-    putString("How many Fibonacci numbers do you want to compute? ");
+    putString("How many Fibonacci numbers do you want to compute?	");
     n = getInt();
     if (n<=0)
        putString("The number should be positive.\n");

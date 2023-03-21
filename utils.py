@@ -78,7 +78,10 @@ class Utils:
     def write_tokens(self, tokens: list):
         # Write the tokens to a file.
         with open("tokens.vctok", "w") as file:
-            file.write("\n".join(tokens))
+            output = ""
+            for i in tokens:
+                output = output + i[0] + " " + i[1] + "\n"
+            file.write(output)
     
     # is_keyword(state: str): Check if the current state is a keyword.
     def is_keyword(self, state: str):
