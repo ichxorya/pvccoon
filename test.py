@@ -2,4 +2,6 @@ from utils import Utils
 
 utils = Utils("example/simple.vc")
 
-print(utils.data[utils.map_state["87"]][utils.map_key[utils.new_line[1]]])
+print(utils.get_next_state("100", "y"))
+
+print(utils.find_type("84"))        

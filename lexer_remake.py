@@ -15,7 +15,7 @@ if __name__ == "__main__":
     utils = Utils(path)
 
     # Get the source code.
-    source_code = utils.source_code
+    source_code = utils.source_code + " "
 
     # Get the maps.
     map_state = utils.map_state
@@ -26,50 +26,112 @@ if __name__ == "__main__":
     current_token = ""
     tokens = []
 
+    # Initialize the starting value for position in file
+    start_position = [1, 1]
+    char_line = 1
+    char_column = 0
+
+    # Initialize the temp parameters
     next_position = 0
+    next_char  = "" 
+    
 
     # Loop through the source code.
     while next_position < len(source_code):
+
+        # Check if arriving at new line or not 
+        if next_char in utils.new_line:
+            char_line += 1
+            char_column = 0
 
         # Get the next character.
         next_char = source_code[next_position]
 
         # Get the next state.
-        if next_char in utils.whitespaces:
-            next_state = utils.get_next_state(current_state, "whitespaces")
-        elif next_char in utils.new_line:
-            next_state = utils.get_next_state(current_state, "newline")
-        else:
-            next_state = utils.get_next_state(current_state, next_char)
+        def find_next_state(state, next):
+            if next in utils.whitespaces:
+                return utils.get_next_state(state, "whitespaces")
+            elif next in utils.new_line:
+                return utils.get_next_state(state, "newline")
+            else:
+                return utils.get_next_state(state, next)
+        next_state = find_next_state(current_state, next_char)
         
         # Check the next state
         match next_state:
             case "69420":       # Error
                 sys.exit(1)
-            case "":            # Any case that lead to "" (mean there's no next stage with next character) with cut the current token and save to tokens list, this case can deal with any next character that lead to end of current token (not counting whitespaces, may be add them later). e.g. i=2;
+            case "" | None:            # Any case that lead to "" (mean there's no next stage with next character) or None (mean that the current state is end state)
+                if source_code[next_position - 1]  not in utils.whitespaces and source_code[next_position - 1] not in utils.new_line:   # Not adding token to tokens if token is created from whitespaces or newline
+                    tokens.append([current_token, current_state, start_position, [char_line, char_column]])
+                current_state = utils.get_next_state("0", next_char)                      
+                if next_char == "\"":       # Not adding " to string
+                    current_token = "" 
+                else:
+                    current_token = "" + next_char 
                 next_position += 1
-                tokens.append([current_token, current_state])           # token list contains token and its end state
-                current_state = "0"                         
-                current_token = ""                        
-                continue
-            case None:          # Cut the token and save when find next state of states that dont appear in table (end state)
-                tokens.append([current_token, current_state])
-                current_state = "0"
+                char_column += 1
+                start_position = [char_line, char_column]
+                continue     
+            case "88":          # Token is note (/**/). Not adding to tokens  
+                current_state = "0"                     
                 current_token = ""
                 next_position += 1
+                char_column += 1
+                start_position = [char_line, char_column]
                 continue
-            case _:             # All state that can be follower by another state
-                if (current_state not in ["86", "83"]) and (next_char in utils.whitespaces or next_char in utils.new_line):        # skip and create new token when meet an whitespaces and newline outside "" and /**?
-                    next_position += 1
-                    tokens.append([current_token, current_state])
-                    current_state = "0"
-                    current_token = ""
-                    continue
-                current_token = current_token + next_char
+            case "105":         # Token is note (//). Not adding to tokens
+                current_state = "0"                     
+                current_token = ""
+                next_position += 1
+                char_column += 1
+                start_position = [char_line + 1, 1]
+                continue
+            case "100":         # When next char is \, add if no other state than 83
                 current_state = next_state
                 next_position += 1
+                if find_next_state(current_state, source_code[next_position]) == "83":
+                    current_token = current_token + next_char
+                char_column += 1 
                 continue
+            case "102":         # Add tab to string
+                current_token = current_token + '\t'
+                current_state = "83"
+                next_position += 1
+                char_column += 1 
+                continue
+            case "101":         # Add newline to string
+                current_token = current_token + '\n'
+                current_state = "83"
+                next_position += 1
+                char_column += 1 
+                continue
+            case "103":         # Add " to string
+                current_token = current_token + '\"'
+                current_state = "83"
+                next_position += 1
+                char_column += 1 
+                continue
+            case "104":         # Add \ to string
+                current_token = current_token + '\\'
+                current_state = "83"
+                next_position += 1
+                char_column += 1 
+                continue
+            case _:             # All states that can be follower by another state
+                if next_char != "\"":           # Remove " from string
+                    current_token = current_token + next_char
+                current_state = next_state
+                next_position += 1
+                char_column += 1 
+                continue
+    
+     # add end token
+    tokens.append(["$", "999", [char_line, char_column],[char_line, char_column]])
 
-    tokens = list(filter(lambda a: a[0] != "", tokens))  # Remove token create bt string of whitespace and newline
+    # Remove token create bt string of whitespace and newline
+    tokens = list(filter(lambda a: a[0] != "", tokens))  
+
     # Write the tokens to a file.
-    utils.write_tokens(tokens)       
+    utils.write_tokens(tokens)   
+    utils.write_verbose(tokens)   
