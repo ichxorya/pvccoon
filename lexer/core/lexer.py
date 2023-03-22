@@ -60,6 +60,8 @@ if __name__ == "__main__":
         # Check the next state
         match next_state:
             case "69420":       # Error
+                print("Error at line " + str(char_line) + ", column " + str(char_column) + ".")
+                print(utils.get_error_line(char_line, char_column))
                 sys.exit(1)
             case "" | None:            # Any case that lead to "" (mean there's no next stage with next character) or None (mean that the current state is end state)
                 if source_code[next_position - 1]  not in utils.whitespaces and source_code[next_position - 1] not in utils.new_line:   # Not adding token to tokens if token is created from whitespaces or newline

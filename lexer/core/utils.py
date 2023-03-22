@@ -1,4 +1,5 @@
 # Import libraries.
+import os
 import csv
 
 # Utils class
@@ -13,23 +14,6 @@ class Utils:
         # Get the source code.
         self.source_code = self.get_source_code(path)
 
-        # Keyword list.
-        self.keywords = [
-            "boolean",
-            "break",
-            "continue",
-            "else",
-            "false",
-            "float",
-            "for",
-            "if",
-            "int",
-            "return",
-            "true",
-            "void",
-            "while",
-        ]
-
         # Separator list.
         self.separators = ["(", ")", "{", "}", "[", "]", ";", ","]
 
@@ -38,6 +22,10 @@ class Utils:
 
         # New line list.
         self.new_line = ["\r", "\n", "\r\n"]
+
+        # Create directory if not exists.
+        if not os.path.exists("../output"):
+            os.makedirs("../output")
 
     # get_input(path: str): Get the the source code as a string.
     def get_source_code(self, path: str):
@@ -74,10 +62,29 @@ class Utils:
         except:
             return ""
         
+     # get_error_line(source_code, line, column): Get the context of the error at a line.
+    def get_error_line(self, line, column):
+        # Get the error line.
+        lines = self.source_code.splitlines()
+        error_line = lines[line - 1] + "\n" + ("-" * (column - 1)) + "^ Error here."
+
+        # If there is a line above, get it.
+        if line > 1:
+            error_line = lines[line - 2] + "\n\n" + error_line
+
+        # Get the error line.
+
+        # If there is a line below, get it.
+        if line < len(lines):
+            error_line = error_line + "\n\n" + lines[line]
+
+        # Return the formatted error line.
+        return error_line
+    
     # write_tokens(tokens: list): Write the tokens to a file.
     def write_tokens(self, tokens: list):
         # Write the tokens to a file.
-        with open("tokens.vctok", "w") as file:
+        with open("../output/tokens.vctok", "w") as file:
             output = ""
             for i in tokens:
                 output = output + "{}\n".format(i[0])
@@ -86,31 +93,12 @@ class Utils:
     # write_verbose(tokens: list): Write the tokens to a file in verbose form
     def write_verbose(self, tokens: list):
         # Write the tokens to a file.
-        with open("tokenverbose.vctok", "w") as file:
+        with open("../output/token.verbose.vctok", "w") as file:
             output = "======= The VC compiler =======\n"
             for i in tokens:
                 output = output + "State = {} [{}], spelling = \"{}\", position = {}({})..{}({})\n".format(i[1], self.find_type(i[1]) , i[0], i[2][0], i[2][1], i[3][0] ,i[3][1])
             file.write(output)
     
-    # is_keyword(state: str): Check if the current state is a keyword.
-    def is_keyword(self, state: str):
-        # Check if the current state is a keyword.
-        return state in [
-            7, # boolean
-            11, # break
-            19, # continue
-            23, # else
-            28, # false
-            93, # float
-            30, # for
-            33, # int
-            89, # if
-            39, # return
-            43, # true
-            47, # void
-            52, # while
-        ]
-
     def find_type(self, state):
         # Find the type from the state
         match state:
