@@ -61,8 +61,8 @@ class Utils:
             return self.data[self.map_state[state]][self.map_key[key]]
         except:
             return ""
-        
-     # get_error_line(source_code, line, column): Get the context of the error at a line.
+
+    # get_error_line(source_code, line, column): Get the context of the error at a line.
     def get_error_line(self, line, column):
         # Get the error line.
         lines = self.source_code.splitlines()
@@ -79,8 +79,10 @@ class Utils:
             error_line = error_line + "\n\n" + lines[line]
 
         # Return the formatted error line.
-        return error_line
-    
+
+        error_message = "Error at line " + str(line) + ", column " + str(column) + ".\n\n"
+        return error_message + error_line
+
     # write_tokens(tokens: list): Write the tokens to a file.
     def write_tokens(self, tokens: list):
         # Write the tokens to a file.
@@ -96,9 +98,20 @@ class Utils:
         with open("output/token.verbose.vctok", "w") as file:
             output = "======= The VC compiler =======\n"
             for i in tokens:
-                output = output + "State = {} [{}], spelling = \"{}\", position = {}({})..{}({})\n".format(i[1], self.find_type(i[1]) , i[0], i[2][0], i[2][1], i[3][0] ,i[3][1])
+                output = (
+                    output
+                    + 'State = {} [{}], spelling = "{}", position = {}({})..{}({})\n'.format(
+                        i[1],
+                        self.find_type(i[1]),
+                        i[0],
+                        i[2][0],
+                        i[2][1],
+                        i[3][0],
+                        i[3][1],
+                    )
+                )
             file.write(output)
-    
+
     def find_type(self, state):
         # Find the type from the state
         match state:
@@ -109,8 +122,8 @@ class Utils:
             case "77":
                 return "<int-literal>"
             case "84":
-                return "<string-literal>"    
-            case "6969" | "31" | "1"| "12" | "20" | "24" | "34" | "40" | "44" | "48":
+                return "<string-literal>"
+            case "6969" | "31" | "1" | "12" | "20" | "24" | "34" | "40" | "44" | "48":
                 return "<id>"
             case "60":
                 return "<="

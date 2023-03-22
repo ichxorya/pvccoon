@@ -10,7 +10,7 @@ void main() {
     putString("How many Fibonacci numbers do you want to compute? ");
     n = getInt();
     if (n<=0)
-       putString("The number should be positive.\n");
+       putString("The number should be positive.\n);
     else {
       putString("\n\n\tI \t Fibonacci(I) \n\t=====================\n");
       next = current = 1;
