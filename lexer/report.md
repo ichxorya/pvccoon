@@ -97,6 +97,25 @@ If not, we print the usage `Usage: python lexer.py <path>` and exit.
 
 - Some required variables are initialized. Note that source code is considered as a string, and the line `source_code = utils.source_code + " "` is used to add a space at the end of the source code. This is due to the lexer's design, which won't be able to identify the last token correctly.
 
+  The tokens is initialized as an array containing a list of tokenized tokens. Every token indicates four information of a tokenized character or keyword:
+    - The first information returns a string type and indicates its content. 
+    - The second information returns an interger type and indicates its ending state.
+    - The third information is a two-dimensional array type [a, b] including a row and two collumns. It indicates a starting point of a given character by the index of a specific row and collumn in the source code, starting from index 1.
+    - The fourth information is a two-dimensional array [a, b] including a row and two collumns. It indicates the ending point of a given character by the index of a specific row and collumn in the source code, starting from index 1.
+  For example, considering the following keyword "int" in the following source code:
+
+      ```c
+      int main() {
+          putString("Hello, world!");
+      }
+      ```
+      
+  As can be seen clearly from the source code, the keyword can be extracted into the following information:
+    - Content: int (the name of the keyword is int).
+    - Ending state: 33 (The ending state of the keyword is 33 according to the transition table)
+    - Starting points: row(1) collumn(1) (The character starts at row 1, collumn 1 in the source code).
+    - Ending points: row(1) collumn(3). (The character ends row 1, collumn 3 in the source code).
+
 - Start looping through the source code. The loop will stop when the current index is greater than the length of the source code.
   - If the next state is an error state, the script prints an error message and exits.
   - If the next state is empty or None, it indicates the end of the current token, and the token is added to the tokens list. The state machine is reset to the initial state.
@@ -104,7 +123,7 @@ If not, we print the usage `Usage: python lexer.py <path>` and exit.
   - If the next state is a special character state, the script handles escape sequences and adds the corresponding character to the current token.
   - In other cases, the script updates the current state and appends the next character to the current token.
 
-- At the end of the file, an end token (`$`) is added to the tokens list.
+- At the end of the file, an end token (`$`) is added to the tokens list. 
 
 - The script filters out any empty tokens that were created from whitespaces or newlines, then writes the token information to two output files:
   - "tokens.vctok": Contains the list of tokens extracted from the source code.
