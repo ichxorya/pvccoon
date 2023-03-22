@@ -6,7 +6,7 @@ import csv
 class Utils:
     def __init__(self, path: str):
         # Read the transition table.
-        self.data = list(csv.reader(open("transition_table.dat")))
+        self.data = list(csv.reader(open("core/transition_table.dat")))
 
         # Get the maps.
         self.map_state, self.map_key = self.get_maps(self.data)
@@ -24,8 +24,8 @@ class Utils:
         self.new_line = ["\r", "\n", "\r\n"]
 
         # Create directory if not exists.
-        if not os.path.exists("../output"):
-            os.makedirs("../output")
+        if not os.path.exists("output"):
+            os.makedirs("output")
 
     # get_input(path: str): Get the the source code as a string.
     def get_source_code(self, path: str):
@@ -84,7 +84,7 @@ class Utils:
     # write_tokens(tokens: list): Write the tokens to a file.
     def write_tokens(self, tokens: list):
         # Write the tokens to a file.
-        with open("../output/tokens.vctok", "w") as file:
+        with open("output/tokens.vctok", "w") as file:
             output = ""
             for i in tokens:
                 output = output + "{}\n".format(i[0])
@@ -93,7 +93,7 @@ class Utils:
     # write_verbose(tokens: list): Write the tokens to a file in verbose form
     def write_verbose(self, tokens: list):
         # Write the tokens to a file.
-        with open("../output/token.verbose.vctok", "w") as file:
+        with open("output/token.verbose.vctok", "w") as file:
             output = "======= The VC compiler =======\n"
             for i in tokens:
                 output = output + "State = {} [{}], spelling = \"{}\", position = {}({})..{}({})\n".format(i[1], self.find_type(i[1]) , i[0], i[2][0], i[2][1], i[3][0] ,i[3][1])
