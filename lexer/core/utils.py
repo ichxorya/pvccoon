@@ -14,9 +14,6 @@ class Utils:
         # Get the source code.
         self.source_code = self.get_source_code(path)
 
-        # Separator list.
-        self.separators = ["(", ")", "{", "}", "[", "]", ";", ","]
-
         # Whitespaces list.
         self.whitespaces = [" ", "\t"]
 

@@ -4,7 +4,7 @@ import sys
 import subprocess
 
 # Define the default input file path
-input_path = "examples/example_fib.vc"
+input_path = "examples/our_examples/hello.vc"
 
 # Define the command to run the lexer.py file
 cmd = ["python", "core/lexer.py", input_path]
