@@ -1,8 +1,0 @@
-/*
-    Programming xxx 2009
-*/
-
-int main() {
-    boolean bulie = true;
-    int i = 130;
-}
