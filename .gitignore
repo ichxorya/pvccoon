@@ -9,3 +9,7 @@ Thumbs.db
 tsconfig.lsif.json
 *.lsif
 *.db
+*.pdb
+**/*.rs.bk
+debug/
+target/

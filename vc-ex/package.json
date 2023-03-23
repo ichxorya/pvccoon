@@ -1,0 +1,25 @@
+{
+  "name": "vc",
+  "displayName": "VC Language",
+  "description": "VC Language support for VS Code",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.76.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "vc",
+      "aliases": ["VC", "vc"],
+      "extensions": [".vc"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "vc",
+      "scopeName": "source.vc",
+      "path": "./syntaxes/vc.tmLanguage.json"
+    }]
+  }
+}

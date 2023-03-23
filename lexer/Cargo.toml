@@ -1,0 +1,71 @@
+[package]
+name = "rvccoon-lexer"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+repository = "https://github.com/ichxorya/rvccoon"
+description = """
+A compiler for the VC language 🦝 R.V.C.C.O.O.N 🦝
+"""
+
+# Note: Should remove unused dependencies.
+[dependencies]
+# Compiler-compiler related crates.
+logos = "0.12.1" # Lexer-generator. Unused.
+combine = "4.6.6" # LL(1) Parser-generator. Unused.
+
+# Unicode related crates.
+unic = "0.9.0" # Unicode and Internationalization Crates.
+unic-langid = "0.9.1" # Unicode Language Identifier API.
+unicode-ident = "1.0.6" # Unicode identifier support according to Unicode Standard Annex #31.
+unicode-width = "0.1.10" # Unicode width according to Unicode Standard Annex #11.
+unicode-normalization = "0.1.22" # Unicode normalization according to Unicode Standard Annex #15.
+unicode-bidi = "0.3.10" # Unicode bidirectional algorithm according to Unicode Standard Annex #9.
+unicode-segmentation = "1.9.0" # Unicode text segmentation according to Unicode Standard Annex #29.
+ucd-util = "0.1.10" # Unicode Character Database (UCD) utilities.
+tb_normalization = "1.0.0" # Vietnamese normalization.
+camino = "1.1.2" # UTF-8 path normalization.
+deunicode = "1.3.3" # Unicode to ASCII transliteration (supports Emoji and Chinese).
+
+# Testing related crates.
+static_assertions = "1.1.0" # Compile-time assertions.
+difference = "2.0.0" # Diffing library.
+pretty_assertions = { version= "1.3.0", default-features = false, features = ["alloc"] } # Pretty assertions.
+assert_fs = "1.0.10" # Filesystem assertions.
+dir-diff = "0.3.2" # Directory diffing.
+tempdir = "0.3.7" # Temporary directories.
+assert_cmd = "2.0.8" # Command assertions.
+
+
+# Logging related crates.
+log = "0.4.17" # Logging facade.
+env_logger = "0.10.0" # Environment-variable-based logging.
+loggerv = "0.7.2" # Logs to stdout and stderr with colors.
+
+# Text processing related crates.
+heck = "0.4.1" # String case conversion.
+regex = "1.7.1" # Regular expressions.
+lazy-regex = "2.4.1" # Lazy regular expressions.
+
+# CLI related crates.
+ansi_term = "0.12.1" # ANSI terminal formatting.
+clap = "4.1.4" # Command line argument parser.
+
+# FFI related crates.
+libc = "0.2.139" # Rust FFI bindings to libc.
+
+# Miscellaneous crates.
+once_cell = "1.17.0" # Single assignment cells and lazy values.
+lsp-types = "0.94.0" # Types for interaction with a language server.
+petgraph = "0.6.3" # Graph datatype.
+polars = "0.27.2" # DataFrame library.
+
+
+# Dev-dependencies a.k.a. test/example/benchmark dependencies.
+[dev-dependencies]
+expect-test = "1.4.0" # Minimalist testing framework.
+mockall = "0.11.3" # Mock Objects for testing.
+proptest = "1.1.0" # Property-based testing.
+criterion = "0.4.0" # Statistic-driven micro-benchmarking library.
