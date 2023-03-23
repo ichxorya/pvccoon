@@ -1,0 +1,13 @@
+======= The VC compiler =======
+State = 33 [int], spelling = "int", position = 1(1)..1(3)
+State = 6969 [<id>], spelling = "main", position = 1(5)..1(8)
+State = 73 [(], spelling = "(", position = 1(9)..1(9)
+State = 74 [)], spelling = ")", position = 1(10)..1(10)
+State = 71 [{], spelling = "{", position = 1(12)..1(12)
+State = 6969 [<id>], spelling = "putString", position = 2(5)..2(13)
+State = 73 [(], spelling = "(", position = 2(14)..2(14)
+State = 84 [<string-literal>], spelling = "Hello, world!", position = 2(15)..2(29)
+State = 74 [)], spelling = ")", position = 2(30)..2(30)
+State = 69 [;], spelling = ";", position = 2(31)..2(31)
+State = 72 [}], spelling = "}", position = 3(1)..3(1)
+State = 999 [$], spelling = "$", position = 3(2)..3(2)

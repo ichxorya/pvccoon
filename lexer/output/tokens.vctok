@@ -1,0 +1,12 @@
+int
+main
+(
+)
+{
+putString
+(
+Hello, world!
+)
+;
+}
+$

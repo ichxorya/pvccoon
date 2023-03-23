@@ -26,12 +26,12 @@ if __name__ == "__main__":
     current_token = ""
     tokens = []
 
-    # Initialize the starting value for position in file
+    # Initialize the starting value for position in file.
     start_position = [1, 1]
     char_line = 1
     char_column = 0
 
-    # Initialize the temp parameters
+    # Initialize the temp parameters.
     next_position = 0
     next_char  = "" 
     
@@ -57,17 +57,22 @@ if __name__ == "__main__":
                 return utils.get_next_state(state, next)
         next_state = find_next_state(current_state, next_char)
         
-        # Check the next state
+        # Check the next state.
         match next_state:
-            case "69420":       # Error
-                print("Error at line " + str(char_line) + ", column " + str(char_column) + ".")
+            # Error state.
+            case "69420":       
                 print(utils.get_error_line(char_line, char_column))
                 sys.exit(1)
-            case "" | None:            # Any case that lead to "" (mean there's no next stage with next character) or None (mean that the current state is end state)
+
+            # Any case that lead to "" (mean there's no next stage with next character) 
+            # or None (mean that the current state is end state).
+            case "" | None:            
                 if source_code[next_position - 1]  not in utils.whitespaces and source_code[next_position - 1] not in utils.new_line:   # Not adding token to tokens if token is created from whitespaces or newline
                     tokens.append([current_token, current_state, start_position, [char_line, char_column]])
-                current_state = utils.get_next_state("0", next_char)                      
-                if next_char == "\"":       # Not adding " to string
+                current_state = utils.get_next_state("0", next_char)  
+                
+                # Not adding " to string.                    
+                if next_char == "\"":       
                     current_token = "" 
                 else:
                     current_token = "" + next_char 
@@ -75,63 +80,80 @@ if __name__ == "__main__":
                 char_column += 1
                 start_position = [char_line, char_column]
                 continue     
-            case "88":          # Token is note (/**/). Not adding to tokens  
+            
+            # Token is comment (/**/). Not adding to tokens.
+            case "88":           
                 current_state = "0"                     
                 current_token = ""
                 next_position += 1
                 char_column += 1
                 start_position = [char_line, char_column]
                 continue
-            case "105":         # Token is note (//). Not adding to tokens
+
+            # Token is comment (//). Not adding to tokens.
+            case "105":         
                 current_state = "0"                     
                 current_token = ""
                 next_position += 1
                 char_column += 1
                 start_position = [char_line + 1, 1]
                 continue
-            case "100":         # When next char is \, add if no other state than 83
+
+            # When next char is \, add if no other state than 83.
+            case "100":         
                 current_state = next_state
                 next_position += 1
                 if find_next_state(current_state, source_code[next_position]) == "83":
                     current_token = current_token + next_char
                 char_column += 1 
                 continue
-            case "102":         # Add tab to string
+
+            # Add tab to string.
+            case "102":         
                 current_token = current_token + '\t'
                 current_state = "83"
                 next_position += 1
                 char_column += 1 
                 continue
-            case "101":         # Add newline to string
+
+            # Add newline to string.
+            case "101":         
                 current_token = current_token + '\n'
                 current_state = "83"
                 next_position += 1
                 char_column += 1 
                 continue
-            case "103":         # Add " to string
+
+            # Add " to string.
+            case "103":         
                 current_token = current_token + '\"'
                 current_state = "83"
                 next_position += 1
                 char_column += 1 
                 continue
-            case "104":         # Add \ to string
+
+            # Add \ to string.
+            case "104":         
                 current_token = current_token + '\\'
                 current_state = "83"
                 next_position += 1
                 char_column += 1 
                 continue
-            case _:             # All states that can be follower by another state
-                if next_char != "\"":           # Remove " from string
+
+            # All states that can be follower by another state.
+            case _:            
+                # Remove " from string.
+                if next_char != "\"":           
                     current_token = current_token + next_char
                 current_state = next_state
                 next_position += 1
                 char_column += 1 
                 continue
     
-     # add end token
+     # Add the end token.
     tokens.append(["$", "999", [char_line, char_column],[char_line, char_column]])
 
-    # Remove token create bt string of whitespace and newline
+    # Remove tokens created by string of whitespace and newline.
     tokens = list(filter(lambda a: a[0] != "", tokens))  
 
     # Write the tokens to a file.

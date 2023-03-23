@@ -6,16 +6,13 @@ import csv
 class Utils:
     def __init__(self, path: str):
         # Read the transition table.
-        self.data = list(csv.reader(open("transition_table.dat")))
+        self.data = list(csv.reader(open("core/transition_table.dat")))
 
         # Get the maps.
         self.map_state, self.map_key = self.get_maps(self.data)
 
         # Get the source code.
         self.source_code = self.get_source_code(path)
-
-        # Separator list.
-        self.separators = ["(", ")", "{", "}", "[", "]", ";", ","]
 
         # Whitespaces list.
         self.whitespaces = [" ", "\t"]
@@ -24,8 +21,8 @@ class Utils:
         self.new_line = ["\r", "\n", "\r\n"]
 
         # Create directory if not exists.
-        if not os.path.exists("../output"):
-            os.makedirs("../output")
+        if not os.path.exists("output"):
+            os.makedirs("output")
 
     # get_input(path: str): Get the the source code as a string.
     def get_source_code(self, path: str):
@@ -61,8 +58,8 @@ class Utils:
             return self.data[self.map_state[state]][self.map_key[key]]
         except:
             return ""
-        
-     # get_error_line(source_code, line, column): Get the context of the error at a line.
+
+    # get_error_line(source_code, line, column): Get the context of the error at a line.
     def get_error_line(self, line, column):
         # Get the error line.
         lines = self.source_code.splitlines()
@@ -79,12 +76,14 @@ class Utils:
             error_line = error_line + "\n\n" + lines[line]
 
         # Return the formatted error line.
-        return error_line
-    
+
+        error_message = "Error at line " + str(line) + ", column " + str(column) + ".\n\n"
+        return error_message + error_line
+
     # write_tokens(tokens: list): Write the tokens to a file.
     def write_tokens(self, tokens: list):
         # Write the tokens to a file.
-        with open("../output/tokens.vctok", "w") as file:
+        with open("output/tokens.vctok", "w") as file:
             output = ""
             for i in tokens:
                 output = output + "{}\n".format(i[0])
@@ -93,12 +92,23 @@ class Utils:
     # write_verbose(tokens: list): Write the tokens to a file in verbose form
     def write_verbose(self, tokens: list):
         # Write the tokens to a file.
-        with open("../output/token.verbose.vctok", "w") as file:
+        with open("output/token.verbose.vctok", "w") as file:
             output = "======= The VC compiler =======\n"
             for i in tokens:
-                output = output + "State = {} [{}], spelling = \"{}\", position = {}({})..{}({})\n".format(i[1], self.find_type(i[1]) , i[0], i[2][0], i[2][1], i[3][0] ,i[3][1])
+                output = (
+                    output
+                    + 'State = {} [{}], spelling = "{}", position = {}({})..{}({})\n'.format(
+                        i[1],
+                        self.find_type(i[1]),
+                        i[0],
+                        i[2][0],
+                        i[2][1],
+                        i[3][0],
+                        i[3][1],
+                    )
+                )
             file.write(output)
-    
+
     def find_type(self, state):
         # Find the type from the state
         match state:
@@ -109,8 +119,8 @@ class Utils:
             case "77":
                 return "<int-literal>"
             case "84":
-                return "<string-literal>"    
-            case "6969" | "31" | "1"| "12" | "20" | "24" | "34" | "40" | "44" | "48":
+                return "<string-literal>"
+            case "6969" | "31" | "1" | "12" | "20" | "24" | "34" | "40" | "44" | "48":
                 return "<id>"
             case "60":
                 return "<="
