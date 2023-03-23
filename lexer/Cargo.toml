@@ -1,6 +1,6 @@
 [package]
-name = "rvccoon-lexer"
-version = "0.1.0"
+name = "rust-vc-compiler-out-of-nowhere"
+version = "0.1.1"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -13,11 +13,10 @@ A compiler for the VC language 🦝 R.V.C.C.O.O.N 🦝
 # Note: Should remove unused dependencies.
 [dependencies]
 # Compiler-compiler related crates.
-logos = "0.12.1" # Lexer-generator. Unused.
-combine = "4.6.6" # LL(1) Parser-generator. Unused.
+pest = "2.5.6" # PEG Parser-generator.
 
 # Unicode related crates.
-unic = "0.9.0" # Unicode and Internationalization Crates.
+unic = "0.9.0" # Unicode and Internationalizcation Crates.
 unic-langid = "0.9.1" # Unicode Language Identifier API.
 unicode-ident = "1.0.6" # Unicode identifier support according to Unicode Standard Annex #31.
 unicode-width = "0.1.10" # Unicode width according to Unicode Standard Annex #11.
@@ -59,9 +58,6 @@ libc = "0.2.139" # Rust FFI bindings to libc.
 # Miscellaneous crates.
 once_cell = "1.17.0" # Single assignment cells and lazy values.
 lsp-types = "0.94.0" # Types for interaction with a language server.
-petgraph = "0.6.3" # Graph datatype.
-polars = "0.27.2" # DataFrame library.
-
 
 # Dev-dependencies a.k.a. test/example/benchmark dependencies.
 [dev-dependencies]
