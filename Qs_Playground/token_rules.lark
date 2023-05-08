@@ -1,0 +1,84 @@
+// Starting rule.
+start: (WHITESPACES | keyword | IDENTIFIER | literal | operator | COMMENT | punctuation)*
+
+// Letters (including _) and digits.
+ALPHA: /[a-zA-Z_]/
+NUM: /[0-9]/
+ALPHA_NUM: (ALPHA | NUM)+
+
+// Whitespaces.
+CR: /\r/
+LF: /\n/
+NEWLINE: (CR? LF)+
+
+WHITESPACES_INLINE: (" "|/\t/)+
+WHITESPACES: (WHITESPACES_INLINE | NEWLINE)+
+
+// Keywords. (lowercase)
+keyword: BOOLEAN | BREAK | CONTINUE | ELSE | FOR | FLOAT | IF | INT | RETURN | VOID | WHILE
+BOOLEAN: "boolean"
+BREAK: "break"
+CONTINUE: "continue"
+ELSE: "else" 
+FOR: "for"
+FLOAT: "float" 
+IF: "if" 
+INT: "int" 
+RETURN: "return" 
+VOID: "void" 
+WHILE: "while"
+
+// Identifiers.
+IDENTIFIER: ALPHA ALPHA_NUM*
+
+// Literals.
+literal: INTLITERAL | FLOATLITERAL | BOOLLITERAL | STRINGLITERAL
+INTLITERAL: NUM+
+FLOATLITERAL: (NUM* FRACTION EXPONENT?) | (NUM+ ".") | (NUM+ "."? EXPONENT)
+FRACTION: "." NUM+
+EXPONENT: (/[EE]/) (/[+-]/)? NUM+
+BOOLLITERAL: "TRUE" | "FALSE"
+STRINGLITERAL: /".*?(?<!\\)"/
+
+// Comments.
+COMMENT: SINGLELINE_CMT | MULTILINE_CMT
+SINGLELINE_CMT: /\/\/[^\n]*/
+MULTILINE_CMT: "/*" /(.|\n)*?/ "*/"
+
+// Operators.
+operator: arithmetic_operator | relational_operator | equality_operator | logical_operator | assignment_operator
+
+arithmetic_operator: PLUS | MINUS | STAR | SLASH
+PLUS: "+"
+MINUS: "-"
+STAR: "*"
+SLASH: "/"
+
+relational_operator: LT | GT | LTE | GTE
+LT: "<"
+GT: ">"
+LTE: "<="
+GTE: ">="
+
+equality_operator: EQ | NEQ
+EQ: "=="
+NEQ: "!="
+
+logical_operator: AND | OR | NOT
+AND: "&&"
+OR: "||"
+NOT: "!"
+
+assignment_operator: ASSIGN
+ASSIGN: "="
+
+// Punctuation.
+punctuation: COMMA | SEMICOLON | LPAREN | RPAREN | LBRACE | RBRACE | LBRACKET | RBRACKET
+COMMA: ","
+SEMICOLON: ";"
+LPAREN: "("
+RPAREN: ")"
+LBRACE: "{"
+RBRACE: "}"
+LBRACKET: "["
+RBRACKET: "]"
