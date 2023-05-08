@@ -37,16 +37,18 @@ VARDECL                     -> INITDECLARATOR INITDECLARATORLIST semicolon .
 INITDECLARATORLIST          -> comma IDENTIFIER INITDECLARATOR INITDECLARATORLIST
                              | e .
 
-INITDECLARATOR              -> lbracket DECLARATOR SUBINITDECLARATOR
+INITDECLARATOR              -> lbracket DECLARATOR rbracket SUBINITDECLARATOR
                              | e .
+
 SUBINITDECLARATOR           -> equal INITIALIZER
                              | e .
 
-DECLARATOR                  -> rbracket
-                             | intliteral rbracket .
+DECLARATOR                  -> intliteral
+                             | e .
 
 INITIALIZER                 -> EXPR
                              | lbraces EXPR SUBINITIALIZER rbraces .
+
 SUBINITIALIZER              -> comma EXPR SUBINITIALIZER
                              | e .
 
@@ -57,10 +59,9 @@ TYPE                        -> void
 
 IDENTIFIER                  -> id .
 
-COMPOUNDSTMT                -> lbraces VARDECLLIST STMTLIST rbraces .
-VARDECLLIST                 -> TYPE IDENTIFIER VARDECL VARDECLLIST
-                             | e .
-STMTLIST                    -> STMT STMTLIST
+COMPOUNDSTMT                -> lbraces SUBCOMPOUNDSTMT rbraces .
+SUBCOMPOUNDSTMT             -> TYPE IDENTIFIER VARDECL SUBCOMPOUNDSTMT
+                             | STMT SUBCOMPOUNDSTMT
                              | e .
 
 STMT                        -> COMPOUNDSTMT
@@ -146,8 +147,9 @@ PROPERPARALIST              -> PARADECL SUBPROPERPARALIST
 SUBPROPERPARALIST           -> comma PARADECL SUBPROPERPARALIST
                              | e .
 
-PARADECL                    -> TYPE IDENTIFIER lbracket DECLARATOR .
-
+PARADECL                    -> TYPE IDENTIFIER SUBPARADECL.
+SUBPARADECL                 -> lbracket DECLARATOR rbracket
+                             | e .
 ARGLIST                     -> lparentheses PROPERARGLIST rparentheses .
 
 PROPERARGLIST               -> EXPR SUBPROPERARGLIST

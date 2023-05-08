@@ -6,12 +6,12 @@ FUNCDECL                    -> PARALIST COMPOUNDSTMT
 VARDECL                     -> INITDECLARATOR INITDECLARATORLIST ; 
 INITDECLARATORLIST          -> , IDENTIFIER INITDECLARATOR INITDECLARATORLIST
 INITDECLARATORLIST          -> ''
-INITDECLARATOR              -> [ DECLARATOR SUBINITDECLARATOR
+INITDECLARATOR              -> [ DECLARATOR ] SUBINITDECLARATOR
 INITDECLARATOR              -> ''
 SUBINITDECLARATOR           -> = INITIALIZER
 SUBINITDECLARATOR           -> ''
-DECLARATOR                  -> rbracket
-DECLARATOR                  -> intliteral ] 
+DECLARATOR                  -> ''
+DECLARATOR                  -> intliteral  
 INITIALIZER                 -> EXPR
 INITIALIZER                 -> { EXPR SUBINITIALIZER } 
 SUBINITIALIZER              -> , EXPR SUBINITIALIZER
@@ -21,11 +21,10 @@ TYPE                        -> boolean
 TYPE                        -> int
 TYPE                        -> float 
 IDENTIFIER                  -> id 
-COMPOUNDSTMT                -> { VARDECLLIST STMTLIST } 
-VARDECLLIST                 -> TYPE IDENTIFIER VARDECL VARDECLLIST
-VARDECLLIST                 -> ''
-STMTLIST                    -> STMT STMTLIST
-STMTLIST                    -> ''
+COMPOUNDSTMT                -> { SUBCOMPOUNDSTMT } 
+SUBCOMPOUNDSTMT             -> TYPE IDENTIFIER VARDECL SUBCOMPOUNDSTMT
+SUBCOMPOUNDSTMT             -> STMT SUBCOMPOUNDSTMT
+SUBCOMPOUNDSTMT             -> ''
 STMT                        -> COMPOUNDSTMT
 STMT                        -> IFSTMT
 STMT                        -> FORSTMT
@@ -91,7 +90,9 @@ PROPERPARALIST              -> PARADECL SUBPROPERPARALIST
 PROPERPARALIST              -> ''
 SUBPROPERPARALIST           -> , PARADECL SUBPROPERPARALIST
 SUBPROPERPARALIST           -> ''
-PARADECL                    -> TYPE IDENTIFIER [ DECLARATOR 
+PARADECL                    -> TYPE IDENTIFIER SUBPARADECL
+SUBPARADECL                 -> [ DECLARATOR ]
+SUBPARADECL                 -> ''
 ARGLIST                     -> ( PROPERARGLIST ) 
 PROPERARGLIST               -> EXPR SUBPROPERARGLIST
 PROPERARGLIST               -> ''
