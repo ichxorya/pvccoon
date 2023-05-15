@@ -8,23 +8,23 @@ DECLARATOR                      -> lbracket SUBDECLARATOR | ''
 SUBDECLARATOR                   -> rbracket | intliteral rbracket
 INITIALISER                     -> EXPR | lbrace EXPR SUBINITIALISER rbrace
 SUBINITIALISER                  -> comma EXPR SUBINITIALISER | ''
-
-COMPOUNDSTMT                    -> lbrace SUBCOMPOUNDSTMT rbrace
-SUBCOMPOUNDSTMT                 -> SUPVARDECL SUPSTMT | SUPVARDECL | ''
+COMPOUNDSTMT                    -> lbrace SUPVARDECL SUBCOMPOUNDSTMT rbrace
+SUBCOMPOUNDSTMT                 -> SUPSTMT | ''
 SUPVARDECL                      -> type identifier VARDECL SUPVARDECL | ''
 SUPSTMT                         -> STMT SUBSTMT
 SUBSTMT                         -> STMT SUBSTMT | ''
+
 STMT                            -> COMPOUNDSTMT | IFSTMT | FORSTMT | WHILESTMT | BREAKSTMT | CONTINUESTMT | RETURNSTMT | EXPRSTMT
 IFSTMT                          -> if lparent EXPR rparent STMT ELSESTMT
 ELSESTMT                        -> else STMT | ''
 FORSTMT                         -> for lparent MAYBEEXPR semicolon MAYBEEXPR semicolon MAYBEEXPR rparent STMT
 MAYBEEXPR                       -> EXPR | ''
 WHILESTMT                       -> while lparent EXPR rparent STMT
+
 BREAKSTMT                       -> break semicolon
 CONTINUESTMT                    -> continue semicolon
 RETURNSTMT                      -> return MAYBEEXPR semicolon
 EXPRSTMT                        -> MAYBEEXPR semicolon
-
 EXPR                            -> ASSIGNMENTEXPR
 ASSIGNMENTEXPR                  -> CONDOREXPR SUBASSIGNMENTEXPR 
 SUBASSIGNMENTEXPR               -> equal CONDOREXPR SUBASSIGNMENTEXPR | ''
