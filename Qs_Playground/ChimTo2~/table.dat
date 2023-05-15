@@ -1,0 +1,7 @@
+table
+    start_symbol S
+    S and big -> A $
+    S and bird -> A $
+    A and big -> big A
+    A and bird -> bird
+end_table
