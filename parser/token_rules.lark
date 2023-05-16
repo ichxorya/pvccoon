@@ -15,18 +15,19 @@ WHITESPACES_INLINE: (" "|/\t/)+
 WHITESPACES: (WHITESPACES_INLINE | NEWLINE)+
 
 // Keywords. (lowercase)
-keyword: BOOLEAN | BREAK | CONTINUE | ELSE | FOR | FLOAT | IF | INT | RETURN | VOID | WHILE
-BOOLEAN: "boolean"
+keyword: BREAK | CONTINUE | ELSE | FOR | IF | RETURN | WHILE | type
+type: VOID | BOOLEAN | FLOAT | INT
+IF: "if" 
+ELSE: "else" 
+FOR: "for" 
+WHILE: "while"
 BREAK: "break"
 CONTINUE: "continue"
-ELSE: "else" 
-FOR: "for"
-FLOAT: "float" 
-IF: "if" 
-INT: "int" 
-RETURN: "return" 
+RETURN: "return"
 VOID: "void" 
-WHILE: "while"
+FLOAT: "float"
+INT: "int" 
+BOOLEAN: "boolean"
 
 // Identifiers.
 IDENTIFIER: ALPHA ALPHA_NUM*

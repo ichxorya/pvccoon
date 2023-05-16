@@ -1,5 +1,5 @@
 S,A a,"c ,"
 S,B a,d
 A,c s,c
-A,", s",","
+A,"[ s","["
 B,d a,d
