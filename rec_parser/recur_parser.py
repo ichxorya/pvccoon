@@ -1,9 +1,9 @@
 from TableHandle import TableHandleClass
 from lexerToken import clean_lexer_token
-
+import re
 
 class AST:
-    def __init__(self, name = "", type = ""):
+    def __init__(self, name="", type=""):
         self.name = name
         self.type = type
         self.branch = []
@@ -11,45 +11,72 @@ class AST:
     def addTree(self, tree):
         self.branch.append(tree)
 
+    def tab_helper(self, counter):
+        str = ""
+        i = 0
+        while i < counter:
+            i += 1
+            str += "    "
+        str = str[: len(str) - 1]
+        return str
+
     def printTree(self):
         if self.type == "Terminal":
             return self.branch[0]
         else:
             if self.type in self.parenttypeLst:
                 if len(self.branch) == 1:
-                    if self.type in ["$", "STMT"]:
-                        str = "( "
-                        j = self.branch[0].printTree()
-                        if j != "":
-                            str += j
-                        str += " )"
+                    j = self.branch[0].printTree()
+                    if j != "":
+                        str = j
                     else:
                         str = ""
-                        j = self.branch[0].printTree()
-                        if j != "":
-                            str += j
                 else:
-                    str = "( "
+                    str = "("
                     for i in self.branch:
                         j = i.printTree()
                         if j != "":
-                            str += j + " "
-                    str = str[: len(str) - 1]
-                    str += " )"
+                            if j in ["{", "}"]:
+                                str += "\n" + j + "\n"
+                            elif j == ";":
+                                str += j + "\n"
+                            else:
+                                str += j + " "
+                    str = str[:len(str) - 1]    
+                    str += ")"
             else:
                 str = ""
                 for i in self.branch:
                     j = i.printTree()
-                    if j != "":
+                    if j in ["{", "}"]:
+                        str += "\n" + j + "\n"
+                    elif j == ";":
+                        str += j + "\n"
+                    else:
                         str += j + " "
-                str = str[: len(str) - 1]
+                str = str[:len(str) - 1]
+                if self.type in ["STMT", "SUBCOMPOUNDSTMT2"]:
+                    str += "\n"
             return str
     
+    def prettier(self):
+        count = 0
+        mod = ""
+        output = self.printTree()
+        output = output.replace("\n ", "\n")
+        output = re.sub("\n+", "\n", output)
+        output = re.sub(r"\(\s*", "(", output)
+        output = re.sub(r"\s*\)", ")", output)
+        output = re.sub(r"\s*\;", ";", output)
+        #modified_string = ""
+        #for char in output:
+        #    if char == "\n":
+        #        modified_string += " "  # replace newline with space
+        #    else:
+        #        modified_string += char  # keep other characters unchanged
+        return output
+
     parenttypeLst = [
-        "$",
-        "PROGRAM",
-        "SUBCOMPOUNDSTMT2",
-        "STMT",
         "ASSIGNMENTEXPR",
         "CONDOREXPR",
         "CONDANDEXPR",
@@ -57,7 +84,6 @@ class AST:
         "RELEXPR",
         "ADDITIVEEXPR",
         "MULTIPLICATIVEEXPR",
-        "UNARYEXPR",
     ]
     termLst = {
         "IDENTIFIER": "identifier",
@@ -133,5 +159,5 @@ class AST:
                         ret = AST(state, "Empty")
                     return ret, i
 
-        tree, i = rec_parser("ULTIMATE", 0)
-        return tree.printTree()
+        tree, i = rec_parser("PROGRAM", 0)
+        return tree.prettier()
