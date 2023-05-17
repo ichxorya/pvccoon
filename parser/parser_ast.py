@@ -1,5 +1,5 @@
-from TableHandle import TableHandleClass
-from lexerToken import clean_lexer_token
+from parser_table_handler import TableHandler
+from parser_lexer import clean_lexer_token
 import re
 
 class AST:
@@ -42,7 +42,7 @@ class AST:
                                 str += j + "\n"
                             else:
                                 str += j + " "
-                    str = str[:len(str) - 1]    
+                    str = str[:len(str) - 1]
                     str += ")"
             else:
                 str = ""
@@ -58,7 +58,7 @@ class AST:
                 if self.type in ["STMT", "SUBCOMPOUNDSTMT2"]:
                     str += "\n"
             return str
-    
+
     def prettier(self):
         count = 0
         mod = ""
@@ -131,7 +131,7 @@ class AST:
         return str in self.termLst
 
     def ast_builder(self, filePath):
-        tab = TableHandleClass("grammar.csv")
+        tab = TableHandler("grammar.dat")
         tokenLst = clean_lexer_token("token_rules.lark", filePath)
 
         def rec_parser(state, index):

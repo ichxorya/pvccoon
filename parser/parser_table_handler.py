@@ -1,6 +1,6 @@
 import csv
 
-class TableHandleClass:
+class TableHandler:
     def __init__(self, sourceCsv):
         self.lst = list(csv.reader(open(sourceCsv)))
         for i in self.lst:
