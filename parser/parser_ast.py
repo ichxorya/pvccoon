@@ -139,7 +139,7 @@ class AST:
                 if state == self.termLst[tokenLst[index].type]:
                     ret = AST(state, "Terminal")
                     ret.addTree(tokenLst[index].value)
-                    return (ret, index + 1)
+                    return ret, index + 1
                 else:
                     print("error")
             else:
@@ -157,7 +157,7 @@ class AST:
                                 ret.addTree(nonterm)
                     else:
                         ret = AST(state, "Empty")
-                    return (ret, i)
+                    return ret, i
 
         tree, i = rec_parser("PROGRAM", 0)
         return tree.prettier()
