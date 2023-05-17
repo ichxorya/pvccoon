@@ -134,7 +134,7 @@ class AST:
         tab = TableHandler("grammar.dat")
         tokenLst = clean_lexer_token("token_rules.lark", filePath)
 
-        def rec_parser(state, index):
+        def recursive_parser(state, index):
             if self.isTerminal(state.upper()):
                 if state == self.termLst[tokenLst[index].type]:
                     ret = AST(state, "Terminal")
@@ -152,12 +152,12 @@ class AST:
                     if len(next) > 0:
                         ret = AST(state, state)
                         for j in next:
-                            nonterm, i = rec_parser(j, i)
+                            nonterm, i = recursive_parser(j, i)
                             if nonterm.type != "Empty":
                                 ret.addTree(nonterm)
                     else:
                         ret = AST(state, "Empty")
                     return ret, i
 
-        tree, i = rec_parser("PROGRAM", 0)
+        tree, i = recursive_parser("PROGRAM", 0)
         return tree.prettier()
