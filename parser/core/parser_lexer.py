@@ -1,30 +1,46 @@
 from lark import Lark, Token
 
-# Create a list of Token
+
 def lexer_token(rule_path, file_path):
-    rule = open(rule_path,"r").read()           # Open rule file
+    """
+    Performs lexical analysis on the code file using the specified rule file.
 
-    vc_parser = Lark(rule)                      # Create Lark
+    Args:
+        rule_path (str): The path to the rule file.
+        file_path (str): The path to the code file.
 
-    prog = open(file_path, "r").read()          # Open code file
+    Returns:
+        list: A list of Token objects representing the analyzed code.
+    """
+    rule = open(rule_path, "r").read()  # Open rule file
 
-    lex_iter = vc_parser.lex(prog)              # Create a generator made of list of Token
+    vc_parser = Lark(rule)  # Create Lark parser
 
-    lst = list(lex_iter)                        # Transform generator to normal list
+    prog = open(file_path, "r").read()  # Open code file
 
-    lst.append(Token("$", "$"))
+    lex_iter = vc_parser.lex(prog)  # Create a generator of Token list
 
-    return lst      
+    lst = list(lex_iter)  # Transform generator to normal list
 
-#test = lambda rule_path, file_path: list(Lark(open(rule_path,"r").read()).lex(open(file_path, "r").read()))         # One-line code
+    lst.append(Token("$", "$"))  # Add end-of-file token
+
+    return lst
+
 
 def clean_lexer_token(rule_path, file_path):
-    test = lexer_token(rule_path, file_path)
-    ret = []
-    for i in test:
-        if i.type not in ["WHITESPACES", "COMMENT"]:
-            ret.append(i)
-    return ret
+    """
+    Cleans the list of Tokens by removing whitespace and comment Tokens.
 
+    Args:
+        rule_path (str): The path to the rule file.
+        file_path (str): The path to the code file.
 
-
+    Returns:
+        list: A cleaned list of Token objects.
+    """
+    tokens = lexer_token(rule_path, file_path)
+    cleaned_tokens = []
+    for token in tokens:
+        if token.type not in ["WHITESPACES", "COMMENT"]:
+            cleaned_tokens.append(token)
+    return cleaned_tokens
