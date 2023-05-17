@@ -42,7 +42,7 @@ class AST:
                                 str += j + "\n"
                             else:
                                 str += j + " "
-                    str = str[:len(str) - 1]    
+                    str = str[:len(str) - 1]
                     str += ")"
             else:
                 str = ""
@@ -58,7 +58,7 @@ class AST:
                 if self.type in ["STMT", "SUBCOMPOUNDSTMT2"]:
                     str += "\n"
             return str
-    
+
     def prettier(self):
         count = 0
         mod = ""
@@ -139,7 +139,7 @@ class AST:
                 if state == self.termLst[tokenLst[index].type]:
                     ret = AST(state, "Terminal")
                     ret.addTree(tokenLst[index].value)
-                    return ret, index + 1
+                    return (ret, index + 1)
                 else:
                     print("error")
             else:
@@ -157,7 +157,7 @@ class AST:
                                 ret.addTree(nonterm)
                     else:
                         ret = AST(state, "Empty")
-                    return ret, i
+                    return (ret, i)
 
         tree, i = rec_parser("PROGRAM", 0)
         return tree.prettier()
