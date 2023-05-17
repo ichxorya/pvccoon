@@ -131,7 +131,7 @@ class AST:
         return str in self.termLst
 
     def ast_builder(self, filePath):
-        tab = TableHandler("grammar.csv")
+        tab = TableHandler("grammar.dat")
         tokenLst = clean_lexer_token("token_rules.lark", filePath)
 
         def rec_parser(state, index):
