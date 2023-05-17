@@ -12,7 +12,8 @@ SUBDECLARATOR                   -> rbracket | intliteral rbracket
 INITIALISER                     -> EXPR | lbrace EXPR SUBINITIALISER rbrace
 SUBINITIALISER                  -> comma EXPR SUBINITIALISER | ''
 COMPOUNDSTMT                    -> lbrace SUBCOMPOUNDSTMT rbrace
-SUBCOMPOUNDSTMT                 -> TYPE identifier VARDECL SUBCOMPOUNDSTMT | STMT SUBCOMPOUNDSTMT | ''
+SUBCOMPOUNDSTMT                 -> SUBCOMPOUNDSTMT2 SUBCOMPOUNDSTMT | STMT SUBCOMPOUNDSTMT | ''
+SUBCOMPOUNDSTMT2                -> TYPE identifier VARDECL
 STMT                            -> IFSTMT | FORSTMT | WHILESTMT | BREAKSTMT | CONTINUESTMT | RETURNSTMT | EXPRSTMT
 IFSTMT                          -> if lparen EXPR rparen COMPOUNDSTMT ELSESTMT
 ELSESTMT                        -> else COMPOUNDSTMT | ''

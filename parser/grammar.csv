@@ -22,9 +22,10 @@ INITIALISER,lbrace EXPR SUBINITIALISER rbrace,lbrace
 SUBINITIALISER,comma EXPR SUBINITIALISER,comma
 SUBINITIALISER,,rbrace
 COMPOUNDSTMT,lbrace SUBCOMPOUNDSTMT rbrace,lbrace
-SUBCOMPOUNDSTMT,TYPE identifier VARDECL SUBCOMPOUNDSTMT,void int float boolean
+SUBCOMPOUNDSTMT,SUBCOMPOUNDSTMT2 SUBCOMPOUNDSTMT,void int float boolean
 SUBCOMPOUNDSTMT,STMT SUBCOMPOUNDSTMT,while stringliteral semicolon return plus not minus lparen intliteral if identifier for floatliteral continue break boolliteral
 SUBCOMPOUNDSTMT,,rbrace
+SUBCOMPOUNDSTMT2,TYPE identifier VARDECL,void int float boolean
 STMT,IFSTMT,if
 STMT,FORSTMT,for
 STMT,WHILESTMT,while
