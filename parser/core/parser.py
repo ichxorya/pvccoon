@@ -25,7 +25,8 @@ if __name__ == "__main__":
         ast = AST()
 
         for i in examples:
-            rule = open(f"output/output_{i}.vcps", "w").write(
+            name = i.split(".")[0]
+            rule = open(f"output/output_{name}.vcps", "w").write(
                 ast.ast_builder(f"../example/{i}")
             )
 
@@ -41,6 +42,8 @@ if __name__ == "__main__":
             sys.exit(1)
 
         # Parse the file.
-        test = AST()
-        rule = open("output.vcps", "w").write(test.ast_builder(arg))
+        ast = AST()
+        name = arg.split(".")[0]
+        rule = open(f"output/{name}.vcps", "w").write(ast.ast_builder(arg))
+        print(f"* Parsing the file {arg}!")
         sys.exit(0)

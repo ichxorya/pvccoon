@@ -1,6 +1,7 @@
 from parser_table_handler import TableHandler
 from parser_lexer import clean_lexer_token
-import re
+import re, subprocess
+
 
 class AST:
     def __init__(self, name="", type=""):
@@ -42,7 +43,7 @@ class AST:
                                 str += j + "\n"
                             else:
                                 str += j + " "
-                    str = str[:len(str) - 1]
+                    str = str[: len(str) - 1]
                     str += ")"
             else:
                 str = ""
@@ -54,27 +55,94 @@ class AST:
                         str += j + "\n"
                     else:
                         str += j + " "
-                str = str[:len(str) - 1]
+                str = str[: len(str) - 1]
                 if self.type in ["STMT", "SUBCOMPOUNDSTMT2"]:
                     str += "\n"
             return str
 
-    def prettier(self):
-        count = 0
-        mod = ""
+    def prettify(self):
         output = self.printTree()
         output = output.replace("\n ", "\n")
         output = re.sub("\n+", "\n", output)
         output = re.sub(r"\(\s*", "(", output)
         output = re.sub(r"\s*\)", ")", output)
         output = re.sub(r"\s*\;", ";", output)
-        #modified_string = ""
-        #for char in output:
-        #    if char == "\n":
-        #        modified_string += " "  # replace newline with space
-        #    else:
-        #        modified_string += char  # keep other characters unchanged
-        return output
+
+        return self.prettify2(output)
+
+    def prettify2(self, code):
+        # Remove unnecessary whitespace.
+        code = code.replace("\n", " ").replace("\r", "")
+
+        # Add indentation.
+        indentation = 0
+        formatted_code = ""
+        for char in code:
+            if char == "{":
+                formatted_code += (
+                    "\n" + " " * indentation + char + "\n" + " " * (indentation + 2)
+                )
+                indentation += 2
+            elif char == "}":
+                indentation -= 2
+                formatted_code += "\n" + " " * indentation + char
+            else:
+                formatted_code += char
+
+        return self.prettify3(formatted_code)
+
+    def prettify3(self, code):
+        INDENT_SIZE = 2  # Number of spaces for each indentation level
+
+        # Split the code into lines
+        lines = code.split("\n")
+
+        # Initialize variables
+        indent_level = 0
+        prettified_code = ""
+
+        # Iterate through each line
+        for line in lines:
+            line = line.strip()  # Remove leading/trailing whitespace
+
+            # Skip empty lines
+            if not line:
+                continue
+
+            # Adjust the indentation level based on opening/closing braces
+            if line.startswith("}"):
+                indent_level -= 1
+
+            # Add indentation to the line
+            prettified_line = " " * (INDENT_SIZE * indent_level) + line
+
+            # Append the prettified line to the result
+            prettified_code += prettified_line + "\n"
+
+            # Adjust the indentation level based on opening/closing braces
+            if line.endswith("{"):
+                indent_level += 1
+
+        return self.prettify4(prettified_code)
+
+    def prettify4(self, code):
+        # Write the code to a temporary file.
+        with open("temp.vcps", "w") as file:
+            file.write(code)
+
+        # Define the command.
+        command = "c_formatter_42 < temp.vcps"
+
+        # Execute the command in the Command Prompt
+        result = subprocess.run(command, shell=True, capture_output=True, text=True)
+
+        # Load the result into a string.
+        formatted_code = result.stdout
+
+        # Remove the temporary file.
+        subprocess.run("del temp.vcps", shell=True)
+
+        return formatted_code
 
     parenttypeLst = [
         "ASSIGNMENTEXPR",
@@ -160,4 +228,4 @@ class AST:
                     return ret, i
 
         tree, i = recursive_parser("PROGRAM", 0)
-        return tree.prettier()
+        return tree.prettify()
