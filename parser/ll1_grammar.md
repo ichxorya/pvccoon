@@ -12,7 +12,11 @@ SUBDECLARATOR                   -> rbracket | intliteral rbracket
 INITIALISER                     -> EXPR | lbrace EXPR SUBINITIALISER rbrace
 SUBINITIALISER                  -> comma EXPR SUBINITIALISER | epsilon
 COMPOUNDSTMT                    -> lbrace SUBCOMPOUNDSTMT rbrace
+<<<<<<< Updated upstream
 SUBCOMPOUNDSTMT                 -> SUBCOMPOUNDSTMT2 SUBCOMPOUNDSTMT | STMT SUBCOMPOUNDSTMT | epsilon
+=======
+SUBCOMPOUNDSTMT                 -> SUBCOMPOUNDSTMT2 SUBCOMPOUNDSTMT | STMT SUBCOMPOUNDSTMT | ''
+>>>>>>> Stashed changes
 SUBCOMPOUNDSTMT2                -> TYPE identifier VARDECL
 STMT                            -> IFSTMT | FORSTMT | WHILESTMT | BREAKSTMT | CONTINUESTMT | RETURNSTMT | EXPRSTMT
 IFSTMT                          -> if lparen EXPR rparen COMPOUNDSTMT ELSESTMT
