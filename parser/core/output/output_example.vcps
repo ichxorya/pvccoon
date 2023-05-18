@@ -1,10 +1,9 @@
-void	main(void)
+void main ( ) 
 {
-	int	n;
-	int	i;
-	int	current;
-	int	next;
-	int	twoaway;
-
-	(n = (n + 1));
+    int n ; 
+    int i ; 
+    int current ; 
+    int next ; 
+    int twoaway ; 
+    (n = (n + 1)) ; 
 }

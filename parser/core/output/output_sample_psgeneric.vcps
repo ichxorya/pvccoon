@@ -1,4 +1,4 @@
-void	main(void)
+void main ( ) 
 {
-	(i = 1);
+    (i = 1) ; 
 }

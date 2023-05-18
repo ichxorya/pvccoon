@@ -29,14 +29,9 @@ class TableHandler:
             i[1] = i[1].split()
             i[2] = i[2].split()
 
-        # Add a row to the end of the table with predefined values.
-        self.lst.append(
-            ["ULTIMATE", ["PROGRAM", "$"], ["void", "int", "float", "boolean"]]
-        )
-
     def getNextState(self, curState, token):
         """
-        Retrieves the next state based on the current state and token.
+        Retrieves the next state based on the production of current state and token, return "error" if no matching production found.
 
         Args:
             curState (str): The current state.

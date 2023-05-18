@@ -1,6 +1,5 @@
 from parser_table_handler import TableHandler
 from parser_lexer import clean_lexer_token
-import re, subprocess
 
 
 class AST:
@@ -35,7 +34,7 @@ class AST:
         self.type = type
         self.branch = []
 
-        self.parenttypeLst = [
+        self.exprLst = [
             "ASSIGNMENTEXPR",
             "CONDOREXPR",
             "CONDANDEXPR",
@@ -43,6 +42,17 @@ class AST:
             "RELEXPR",
             "ADDITIVEEXPR",
             "MULTIPLICATIVEEXPR",
+            "UNARYEXPR",
+        ]
+
+        self.subexprLst = [
+            "SUBASSIGNMENTEXPR",
+            "SUBCONDOREXPR",
+            "SUBCONDANDEXPR",
+            "SUBEQUALITYEXPR",
+            "SUBRELEXPR",
+            "SUBADDITIVEEXPR",
+            "SUBMULTIPLICATIVEEXPR",
         ]
 
         self.termLst = {
@@ -96,186 +106,117 @@ class AST:
         """
         self.branch.append(tree)
 
-    def printTree(self):
+    def tab_helper(self, counter):
+        """
+        A helper method to create o string of "\t" for decoration
+
+        Args:
+            counter (int): The number of "\t" need to add.
+        Returns:
+            sre: String of "\t"    
+        """
+        str = ""
+        i = 0
+        while i < counter:
+            i += 1
+            str += "    "
+        return str
+
+    def printTree(self, tabCount):
         """
         Prints the tree starting from the current node.
+
+        Args:
+            tabCount (int): The number of "\t" for current token, use for decoration.
 
         Returns:
             str: The string representation of the tree.
         """
-        if self.type == "Terminal":
-            return self.branch[0]
-        else:
-            if self.type in self.parenttypeLst:
-                if len(self.branch) == 1:
-                    j = self.branch[0].printTree()
-                    if j != "":
-                        str = j
-                    else:
-                        str = ""
-                else:
-                    str = "("
-                    for i in self.branch:
-                        j = i.printTree()
 
-                        if j != "":
-                            if j in ["{", "}"]:
-                                str += "\n" + j + "\n"
-                            elif j == ";":
-                                str += j + "\n"
-                            else:
-                                str += j + " "
-
-                    str = str[: len(str) - 1]
-                    str += ")"
+        # Print the value of terminal token.
+        if self.type == "Terminal":                             
+            # Special case: "else" token.
+            if self.branch[0] == "else":                        
+                str = self.tab_helper(tabCount) 
+                str = str[: len(str) - 1] + self.branch[0]
+                return str
+            # Normal token return their value.
             else:
+                return self.branch[0]
+        # Print the nonterminal token.
+        else:
+            # Special case: token "PROGRAM".
+            if self.type == "PROGRAM":
                 str = ""
                 for i in self.branch:
-                    j = i.printTree()
-                    if j in ["{", "}"]:
-                        str += "\n" + j + "\n"
-                    elif j == ";":
+                    j = i.printTree(tabCount)
+                    # Special case: token "SUBPROGRAM", require "\n" between "SUBPROGRAM".
+                    if i.type == "SUBPROGRAM":
                         str += j + "\n"
                     else:
                         str += j + " "
                 str = str[: len(str) - 1]
-                if self.type in ["STMT", "SUBCOMPOUNDSTMT2"]:
-                    str += "\n"
-            return str
-
-    def prettify(self):
-        """
-        Formats the code by removing unnecessary whitespace and newlines.
-
-        Returns:
-            str: The prettified code.
-        """
-        # Get the string representation of the code to be formatted.
-        output = self.printTree()
-
-        # Remove whitespace after newlines.
-        output = output.replace("\n ", "\n")
-
-        # Remove duplicate newlines.
-        output = re.sub("\n+", "\n", output)
-
-        # Remove whitespace after opening parentheses.
-        output = re.sub(r"\(\s*", "(", output)
-
-        # Remove whitespace before closing parentheses.
-        output = re.sub(r"\s*\)", ")", output)
-
-        # Remove whitespace before semicolons.
-        output = re.sub(r"\s*\;", ";", output)
-
-        # Call the prettify2 method.
-        return self.prettify2(output)
-
-    def prettify2(self, code):
-        """
-        Adds indentation to the code.
-
-        Args:
-            code (str): The code to be indented.
-
-        Returns:
-            str: The indented code.
-        """
-        # Remove unnecessary whitespace.
-        code = code.replace("\n", " ").replace("\r", "")
-
-        # Add indentation.
-        indentation = 0
-        formatted_code = ""
-        for char in code:
-            if char == "{":
-                formatted_code += (
-                    "\n" + " " * indentation + char + "\n" + " " * (indentation + 2)
-                )
-                indentation += 2
-            elif char == "}":
-                indentation -= 2
-                formatted_code += "\n" + " " * indentation + char
+            # Special case: token "COMPOUNDSTMT", use tab_helper() to decorate program.
+            elif self.type == "COMPOUNDSTMT":
+                str = "\n"
+                for i in self.branch:
+                    j = i.printTree(tabCount)
+                    if j != "":
+                        if j == "{":
+                            str += self.tab_helper(tabCount) + j + "\n"
+                        elif j == "}":
+                            str += self.tab_helper(tabCount) + j
+                        else:
+                            str += j
+            # Special case: token "STMT" and "SUBCOMPOUNDSTMT2", add "\n" after each stament or declaration.
+            elif self.type in ["STMT", "SUBCOMPOUNDSTMT2"]:
+                tabCount += 1
+                str = self.tab_helper(tabCount)
+                for i in self.branch:
+                    j = i.printTree(tabCount)
+                    if j != "":
+                        str += j + " "
+                str += "\n"
+            # Special case: token "SUBCOMPOUNDSTMT", print stament or declaration continuously.
+            elif self.type == "SUBCOMPOUNDSTMT":
+                str = ""
+                for i in self.branch:
+                    j = i.printTree(tabCount)
+                    if j != "":
+                        str += j
+            # Special case: children of token "EXPR", 
+            # print child token if there is only 1 child,
+            # print token inside ( ) if there are more children.            
+            elif self.type in self.exprLst:
+                if len(self.branch) == 1:
+                    str = ""
+                    j = self.branch[0].printTree(tabCount)
+                    if j != "":
+                        str += j
+                else:
+                    str = "("
+                    for i in self.branch:
+                        j = i.printTree(tabCount)
+                        if j != "":
+                            str += j
+                    str = str[: len(str) - 1]
+                    str += ")"
+            # Special case: children of children of token "EXPR",
+            # print with or without ( ) depend on number of children.
+            elif self.type in self.subexprLst:
+               if len(self.branch) == 3:
+                   str = " " + self.branch[0].printTree(tabCount) + " (" + self.branch[1].printTree(tabCount) + self.branch[2].printTree(tabCount) + ")"
+               else:
+                   str = " " + self.branch[0].printTree(tabCount) + " " + self.branch[1].printTree(tabCount) + ")"
+            # Normal case: print children token, separate by " ".
             else:
-                formatted_code += char
-
-        # Call the prettify3 method.
-        return self.prettify3(formatted_code)
-
-    def prettify3(self, code):
-        """
-        Adjusts indentation levels and formatting of the code.
-
-        Args:
-            code (str): The code to be adjusted.
-
-        Returns:
-            str: The adjusted code.
-        """
-        # Number of spaces for each indentation level.
-        INDENT_SIZE = 2
-
-        # Split the code into lines.
-        lines = code.split("\n")
-
-        # Initialize variables.
-        indent_level = 0
-        prettified_code = ""
-
-        # Iterate through each line.
-        for line in lines:
-            # Remove leading/trailing whitespace.
-            line = line.strip()
-
-            # Skip empty lines.
-            if not line:
-                continue
-
-            # Adjust the indentation level based on opening/closing braces.
-            if line.startswith("}"):
-                indent_level -= 1
-
-            # Add indentation to the line.
-            prettified_line = " " * (INDENT_SIZE * indent_level) + line
-
-            # Append the prettified line to the result.
-            prettified_code += prettified_line + "\n"
-
-            # Adjust the indentation level based on opening/closing braces.
-            if line.endswith("{"):
-                indent_level += 1
-
-        # Call the prettify4 method.
-        return self.prettify4(prettified_code)
-
-    def prettify4(self, code):
-        """
-        Uses an external code formatter to further prettify the code.
-
-        Args:
-            code (str): The code to be prettified.
-
-        Returns:
-            str: The prettified code.
-        """
-        # Write the code to a temporary file.
-        with open("temp.vcps", "w") as file:
-            file.write(code)
-
-        # Define the command.
-        command = "c_formatter_42 < temp.vcps"
-
-        # Execute the command in the Command Prompt.
-        result = subprocess.run(command, shell=True, capture_output=True, text=True)
-
-        # Load the result into a string.
-        formatted_code = result.stdout
-
-        # Remove the temporary file.
-        subprocess.run("del temp.vcps", shell=True)
-
-        # Return the formatted code.
-        return formatted_code
+                str = ""
+                for i in self.branch:
+                    j = i.printTree(tabCount)
+                    if j != "":
+                        str += j + " "
+                str = str[: len(str) - 1]
+            return str
 
     def isTerminal(self, str):
         """
@@ -305,29 +246,55 @@ class AST:
 
         # Initialize the AST in terms of a recursive parser.
         def recursive_parser(state, index):
+            """
+            Builds an Abstract Syntax Tree (AST) recursively at current state.
+
+            Args:
+                state (str): The curent state to build AST.
+                index the curent token index in token list.
+
+            Returns:
+                (ret, i): tuple
+                    ret: The AST of current state.
+                    i: the index after parsing though state
+            """
+            # IF token is terminal
             if self.isTerminal(state.upper()):
+                # if the value of token match the terminal in grammar.
                 if state == self.termLst[tokenLst[index].type]:
+                    # Create AST of current token and add the value as its child.
                     ret = AST(state, "Terminal")
                     ret.addTree(tokenLst[index].value)
+                    # return the AST, move the index to next token
                     return ret, index + 1
+                # return "error" if the value is unmatch.
                 else:
                     print("error")
+            # IF token is nonterminal
             else:
+                # Get the list of token as result of production.
                 next = tab.getNextState(state, self.termLst[tokenLst[index].type])
+                # return "error" if no production is found.
                 if next == "error":
                     return "error"
                 else:
                     next = list(next)
                     i = index
+                    # Create normal AST if result of production is not empty.
                     if len(next) > 0:
                         ret = AST(state, state)
                         for j in next:
                             nonterm, i = recursive_parser(j, i)
+                            # Ignore empty AST.
                             if nonterm.type != "Empty":
                                 ret.addTree(nonterm)
+                    # Create empty AST if result of production is empty.
                     else:
                         ret = AST(state, "Empty")
                     return ret, i
 
         tree, i = recursive_parser("PROGRAM", 0)
-        return tree.prettify()
+        # Print error if cannopt build ASST.
+        if tree == "error":
+            print("Cannot parse with program: Program grammar is not VC.")
+        return tree.printTree(0)
