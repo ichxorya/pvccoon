@@ -10,7 +10,8 @@ class AST:
         name (str): The name of the node.
         type (str): The type of the node.
         branch (list): A list of the node's children (subtrees).
-        parenttypeLst (list): A list of some non-terminals (EXPRs).
+        exprLst (list): A list of some non-terminals (EXPRs).
+        subexprLst (list): A list of some non-terminals (SUBEXPRs).
         termLst (dict): A list of the terminals.
 
     Methods:
@@ -18,8 +19,8 @@ class AST:
         addTree(tree): Adds a child to the node.
         printTree(): Prints the tree.
         ast_builder(source): Builds the AST.
-        prettify*(source): Prettifies the AST. There are 4 methods for this, act in a pipeline.
         isTerminal(token): Checks if a token is a terminal.
+        tab_helper(counter): A helper method to create strings of "\t" for decoration.
     """
 
     def __init__(self, name="", type=""):
@@ -108,12 +109,13 @@ class AST:
 
     def tab_helper(self, counter):
         """
-        A helper method to create o string of "\t" for decoration
+        A helper method to create strings of "\t" for decoration.
 
         Args:
             counter (int): The number of "\t" need to add.
+
         Returns:
-            sre: String of "\t"    
+            str: The string of "\t".
         """
         str = ""
         i = 0
@@ -134,10 +136,10 @@ class AST:
         """
 
         # Print the value of terminal token.
-        if self.type == "Terminal":                             
+        if self.type == "Terminal":
             # Special case: "else" token.
-            if self.branch[0] == "else":                        
-                str = self.tab_helper(tabCount) 
+            if self.branch[0] == "else":
+                str = self.tab_helper(tabCount)
                 str = str[: len(str) - 1] + self.branch[0]
                 return str
             # Normal token return their value.
@@ -184,9 +186,9 @@ class AST:
                     j = i.printTree(tabCount)
                     if j != "":
                         str += j
-            # Special case: children of token "EXPR", 
+            # Special case: children of token "EXPR",
             # print child token if there is only 1 child,
-            # print token inside ( ) if there are more children.            
+            # print token inside ( ) if there are more children.
             elif self.type in self.exprLst:
                 if len(self.branch) == 1:
                     str = ""
@@ -204,10 +206,23 @@ class AST:
             # Special case: children of children of token "EXPR",
             # print with or without ( ) depend on number of children.
             elif self.type in self.subexprLst:
-               if len(self.branch) == 3:
-                   str = " " + self.branch[0].printTree(tabCount) + " (" + self.branch[1].printTree(tabCount) + self.branch[2].printTree(tabCount) + ")"
-               else:
-                   str = " " + self.branch[0].printTree(tabCount) + " " + self.branch[1].printTree(tabCount) + ")"
+                if len(self.branch) == 3:
+                    str = (
+                        " "
+                        + self.branch[0].printTree(tabCount)
+                        + " ("
+                        + self.branch[1].printTree(tabCount)
+                        + self.branch[2].printTree(tabCount)
+                        + ")"
+                    )
+                else:
+                    str = (
+                        " "
+                        + self.branch[0].printTree(tabCount)
+                        + " "
+                        + self.branch[1].printTree(tabCount)
+                        + ")"
+                    )
             # Normal case: print children token, separate by " ".
             else:
                 str = ""
@@ -293,7 +308,7 @@ class AST:
                         ret = AST(state, "Empty")
                     return ret, i
 
-        tree, i = recursive_parser("PROGRAM", 0)
+        tree, _ = recursive_parser("PROGRAM", 0)
         # Print error if cannopt build ASST.
         if tree == "error":
             print("Cannot parse with program: Program grammar is not VC.")

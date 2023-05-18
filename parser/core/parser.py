@@ -7,7 +7,10 @@ if __name__ == "__main__":
     It could be used to parse a file, a folder or the given examples.
 
     Args:
-        arg (str): The path to the file/folder to be parsed, or the flag --example.
+        arg (str): Could be one of the following:
+            - A file path to parse a file.
+            - "--example" to parse the examples.
+            - "--folder" to parse a folder, followed by the folder path.
     """
 
     # Check the arguments.
