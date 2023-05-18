@@ -1,5 +1,6 @@
 import csv
 
+
 class TableHandler:
     """
     A class for handling tables and performing operations on them.
@@ -20,10 +21,15 @@ class TableHandler:
         Args:
             sourceCsv (str): The path to the CSV file containing the table data.
         """
+        # Read data from the CSV file and convert it into a list.
         self.lst = list(csv.reader(open(sourceCsv)))
+
+        # Split the second and third elements of each row into separate lists.
         for i in self.lst:
             i[1] = i[1].split()
             i[2] = i[2].split()
+
+        # Add a row to the end of the table with predefined values.
         self.lst.append(
             ["ULTIMATE", ["PROGRAM", "$"], ["void", "int", "float", "boolean"]]
         )
@@ -39,13 +45,18 @@ class TableHandler:
         Returns:
             str: The next state.
         """
+        # Iterate over each row in the table.
         for i in self.lst:
+            # Check if the current state and token match the row's state and token values.
             if curState == i[0] and token in i[2]:
+                # Return the next state associated with the current state and token.
                 return i[1]
+
+        # If no matching state and token pair is found, return "error".
         return "error"
 
     def printlst(self):
         """Prints the table data."""
+        # Iterate over each row in the table and print it, along with a newline.
         for i in self.lst:
-            print(i)
-            print()
+            print(f"{i}\n")
